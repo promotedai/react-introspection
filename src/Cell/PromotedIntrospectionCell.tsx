@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { MouseEvent, useState } from 'react'
 import { CellPopup } from './CellPopup'
 
@@ -40,7 +40,7 @@ export const PromotedIntrospectionCell = ({
       background: 'white',
       zIndex: 1000
     } : {})
-  } as React.CSSProperties
+  } as CSSProperties
   const backgroundContainer = {
     background: 'black',
     height: '100%',
@@ -50,36 +50,34 @@ export const PromotedIntrospectionCell = ({
     top: '0',
     width: '100%',
     zIndex: 999,
-  } as React.CSSProperties
+  } as CSSProperties
 
   const payload = JSON.parse(introspectionPayload)
   const handleClose = () => setContextMenuOpen(false)
 
-  return (
-    <>
-      <div onContextMenu={onContextMenu} style={cellContainer}>
-        {renderItem(renderArgs)}
-        {contextMenuOpen && (
-          <CellPopup
-            introspectionData={{
-              userId: payload.userId,
-              logUserId: payload.logUserId,
-              requestId: payload.requestId,
-              insertionId: payload.insertionId,
-              promotedRank: payload.promotedRank,
-              retrievalRank: payload.retrievalRank,
-              pClick: payload.pClick,
-              pPurchase: payload.pPurchase,
-              queryRelevance: payload.queryRelevance,
-              personalization: payload.personalization,
-            }}
-            handleClose={handleClose}
-          />
-        )}
-      </div>
+  return (<>
+    <div onContextMenu={onContextMenu} style={cellContainer}>
+      {renderItem(renderArgs)}
       {contextMenuOpen && (
-        <div onClick={onClickBackground} style={backgroundContainer}/>
+        <CellPopup
+          introspectionData={{
+            userId: payload.userId,
+            logUserId: payload.logUserId,
+            requestId: payload.requestId,
+            insertionId: payload.insertionId,
+            promotedRank: payload.promotedRank,
+            retrievalRank: payload.retrievalRank,
+            pClick: payload.pClick,
+            pPurchase: payload.pPurchase,
+            queryRelevance: payload.queryRelevance,
+            personalization: payload.personalization,
+          }}
+          handleClose={handleClose}
+        />
       )}
-    </>
-  )
+    </div>
+    {contextMenuOpen && (
+      <div onClick={onClickBackground} style={backgroundContainer}/>
+    )}
+  </>)
 }
