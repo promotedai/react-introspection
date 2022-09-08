@@ -1,4 +1,5 @@
-import { Box, Button, Theme, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
+import { Theme } from "@mui/system"
 import { useState } from "react"
 import { Checkmark } from "./Checkmark"
 import { formatting } from "./formatting"
@@ -6,7 +7,7 @@ import { styles } from "./styles"
 import { CellIntrospectionData } from "./types"
 
 export interface StatsPanelArgs {
-  CellIntrospectionData: CellIntrospectionData
+  introspectionData: CellIntrospectionData
   handleCopyButtonVisibilityChange: (visible: boolean) => any
   handleClose: () => any
   theme: Theme
@@ -27,7 +28,7 @@ class statsStyles {
 }
 
 export const StatsPanel = ({
-  CellIntrospectionData,
+  introspectionData,
   handleCopyButtonVisibilityChange,
   handleClose,
   theme,
@@ -44,7 +45,7 @@ export const StatsPanel = ({
     pPurchase,
     queryRelevance,
     personalization,
-  } = CellIntrospectionData
+  } = introspectionData
 
   const ids = [
     ['User ID', userId],

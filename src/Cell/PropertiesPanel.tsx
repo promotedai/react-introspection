@@ -1,10 +1,8 @@
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
-import { Box, Button, Collapse, FormControl, FormControlLabel, List, ListItemButton, ListItemText, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Slider, Tab, Table, TableBody, TableCell, TableContainer, TableRow, Tabs, Typography } from '@mui/material'
-import { createTheme, Theme, ThemeProvider } from '@mui/system'
-import React, { useState } from 'react'
-import { Checkmark } from './Checkmark'
+import { Box, Button, Collapse, List, ListItemButton, ListItemText,  Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material'
+import { Theme } from '@mui/system'
+import { useState } from 'react'
 import { styles } from './styles'
-import { CellIntrospectionData } from './types'
 
 export interface PropertiesPanelArgs {
   handleClose: () => any
@@ -19,11 +17,11 @@ class propertiesStyles {
 }
 
 const fakeItemProps = [
-  ["Feature TPT Haversine Distance Miles", 0.0036],
+  ["Feature Haversine Distance Miles", 0.0036],
   ["Feature Response Insertion Position", 0.0079],
   ["Feature Personalize BOOTSTRAP31 Score", 0.0013],
-  ["Feature TPT Search Score", 0.0050],
-  ["Feature TPT Zoom Box Area", 0.0065],
+  ["Feature Search Score", 0.0050],
+  ["Feature Zoom Box Area", 0.0065],
   ["Feature Personalize Bootstrap N", 0.0039],
   ["Item Rate Smooth Navigate Impression 30DAY", 0.0099],
   ["Feature Personalize BOOTSTRAP21 Score", 0.0038],
@@ -44,7 +42,7 @@ const fakeItemProps = [
   ["Feature Personalize BOOTSTRAP31N", 0.0073],
   ["Item Rate Raw Purchase Impression 30DAY", 0.0029],
   ["Item Max Vehicles", 0.0172],
-  ["Feature TPT Has Zoom Box", 0.0296],
+  ["Feature Has Zoom Box", 0.0296],
   ["Item Count Checkout 30DAY", 0.037],
   ["Item Rate Raw Checkout Navigate 7DAY", 0.0296],
 ]
