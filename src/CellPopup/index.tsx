@@ -1,57 +1,22 @@
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { Box, Button, Collapse, FormControl, FormControlLabel, List, ListItemButton, ListItemText, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Slider, Tab, Table, TableBody, TableCell, TableContainer, TableRow, Tabs, Typography } from '@mui/material'
-import { blue } from '@mui/material/colors'
 import { createTheme, Theme, ThemeProvider } from '@mui/system'
 import React, { useState } from 'react'
-import { Checkmark } from '../Checkmark'
-
-export interface IntrospectionStats {
-  userId?: string
-  logUserId?: string
-  requestId?: string
-  insertionId?: string
-  promotedRank?: number
-  retrievalRank?: number
-  pClick?: number
-  pPurchase?: number
-  queryRelevance?: number
-  personalization?: number
-  handleClose?: string
-}
+import { Checkmark } from './Checkmark'
+import { styles } from './styles'
+import { CellIntrospectionData } from './types'
 
 const relativeFormat = (n: number) => `${n >= 0 ? '+' : '–'}${Math.abs(n)}`
 
-const buttonStyle = (theme: Theme) => ({
-  "&.MuiButton-contained": {
-    background: blue[700],
-    color: "white"
-  },
-  marginLeft: theme.spacing(1),
-})
-
-const tabContentContainerStyle = (theme: Theme) => ({
-  columnGap: theme.spacing(1),
-  display: 'grid',
-  padding: '10px 20px 20px 20px',
-  rowGap: theme.spacing(1),
-})
-
-const buttonContainerStyle = (theme: Theme) => ({
-  alignContent: 'center',
-  gridColumn: '1 / 5',
-  marginTop: theme.spacing(1),
-  textAlign: 'right',
-})
-
 interface StatsPanelArgs {
-  introspectionStats: IntrospectionStats
+  CellIntrospectionData: CellIntrospectionData
   handleCopyButtonVisibilityChange: (visible: boolean) => any
   handleClose: () => any
   theme: Theme
 }
 
 const StatsPanel = ({
-  introspectionStats,
+  CellIntrospectionData,
   handleCopyButtonVisibilityChange,
   handleClose,
   theme,
@@ -68,7 +33,7 @@ const StatsPanel = ({
     pPurchase,
     queryRelevance,
     personalization,
-  } = introspectionStats
+  } = CellIntrospectionData
 
   const ids = [
     ['User ID', userId],
@@ -145,16 +110,16 @@ const StatsPanel = ({
     <Box
       sx={{
         gridTemplateColumns: 'repeat(4, 1fr)',
-        ...tabContentContainerStyle(theme)
+        ...styles.tabContentContainer(theme)
       }}
     >
       {introspectionRows('IDs', ids, '1 / 2', '2 / 5')}
       {introspectionRows('Ranks', ranks, '1 / 3', '3 / 5')}
       {introspectionRows('Statistics', stats, '1 / 3', '3 / 5')}
 
-      <Box sx={buttonContainerStyle(theme)}>
+      <Box sx={styles.buttonContainer(theme)}>
         {copyButtonVisible
-          ? <Button onClick={handleCopyIds} sx={buttonStyle(theme)} variant='outlined'>Copy</Button>
+          ? <Button onClick={handleCopyIds} sx={styles.button(theme)} variant='outlined'>Copy</Button>
           : <Box
               sx={{
                 alignContent: 'center',
@@ -170,10 +135,10 @@ const StatsPanel = ({
               <Typography sx={{ fontSize: 14, gridColumn: '2 / 4' }}>Copied</Typography>
             </Box>
         }
-        <Button onClick={handleRequestReport} sx={buttonStyle(theme)} variant='outlined'>
+        <Button onClick={handleRequestReport} sx={styles.button(theme)} variant='outlined'>
           Request Report...
         </Button>
-        <Button onClick={handleClose} sx={buttonStyle(theme)} variant='contained'>
+        <Button onClick={handleClose} sx={styles.button(theme)} variant='contained'>
           Close
         </Button>
       </Box>
@@ -406,12 +371,12 @@ const ModerationPanel = ({
 }
 
 export interface CellPopupArgs {
-  introspectionStats: IntrospectionStats
+  CellIntrospectionData: CellIntrospectionData
   handleClose: () => any
 }
 
 export const CellPopup = ({
-  introspectionStats,
+  CellIntrospectionData,
   handleClose,
 } : CellPopupArgs) => {
   const theme = createTheme({
@@ -450,7 +415,7 @@ export const CellPopup = ({
 
         {tabIndex == 0 && (
           <StatsPanel
-            introspectionStats={introspectionStats}
+            CellIntrospectionData={CellIntrospectionData}
             handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
             handleClose={handleClose}
             theme={theme}
