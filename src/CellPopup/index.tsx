@@ -1,9 +1,9 @@
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
-import { Box, Button, Collapse, FormControl, FormControlLabel, List, ListItemButton, ListItemText, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Slider, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material'
+import { Box, Button, Collapse, FormControl, FormControlLabel, List, ListItemButton, ListItemText, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Slider, Tab, Table, TableBody, TableCell, TableContainer, TableRow, Tabs, Typography } from '@mui/material'
 import { blue } from '@mui/material/colors'
-import { Theme } from '@mui/system'
+import { createTheme, Theme, ThemeProvider } from '@mui/system'
 import React, { useState } from 'react'
-import { Checkmark } from './Checkmark'
+import { Checkmark } from '../Checkmark'
 
 export interface IntrospectionStats {
   userId?: string
@@ -45,12 +45,14 @@ const buttonContainerStyle = (theme: Theme) => ({
 
 interface StatsPanelArgs {
   introspectionStats: IntrospectionStats
+  handleCopyButtonVisibilityChange: (visible: boolean) => any
   handleClose: () => any
   theme: Theme
 }
 
 const StatsPanel = ({
   introspectionStats,
+  handleCopyButtonVisibilityChange,
   handleClose,
   theme,
 }: StatsPanelArgs) => {
@@ -122,8 +124,10 @@ const StatsPanel = ({
   const [copyButtonVisible, setCopyButtonVisible] = useState(true)
   const handleCopyIds = () => {
     setCopyButtonVisible(false)
+    handleCopyButtonVisibilityChange(false)
     setTimeout(() => {
       setCopyButtonVisible(true)
+      handleCopyButtonVisibilityChange(true)
     }, 2000)
   }
 
@@ -410,5 +414,57 @@ export const CellPopup = ({
   introspectionStats,
   handleClose,
 } : CellPopupArgs) => {
+  const theme = createTheme({
+    typography: {
+      body1: {
+        fontSize: 12,
+      },
+    },
+  })
 
+  const [tabIndex, setTabIndex] = useState(0)
+  const handleTabChange = (_: Event, newTabIndex: number) => {
+    setTabIndex(newTabIndex)
+  }
+  const [promotedLogoVisible, setPromotedLogoVisible] = useState(true)
+  const handleCopyButtonVisibilityChange = (visible: boolean) => {
+    setPromotedLogoVisible(visible)
+  }
+
+  return (<ThemeProvider theme={theme}>
+    <Box sx={outerContainer}>
+      <Box boxShadow={4} sx={innerContainer}>
+        <Box sx={callout}/>
+        <Tabs onChange={handleTabChange} value={tabIndex} variant='scrollable'>
+          <Tab label='Stats'/>
+          <Tab label='Properties'/>
+          <Tab label='Moderation'/>
+          <Tab label='Moderation Log'/>
+        </Tabs>
+        {promotedLogoVisible &&
+          <img
+            style={promotedLogo}
+            src='https://avatars.githubusercontent.com/t/3500892?s=280&v=4'
+          />
+        }
+
+        {tabIndex == 0 && (
+          <StatsPanel
+            introspectionStats={introspectionStats}
+            handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
+            handleClose={handleClose}
+            theme={theme}
+          />
+        )}
+
+        {tabIndex == 1 && (
+          <PropertiesPanel handleClose={handleClose} theme={theme}/>
+        )}
+
+        {tabIndex == 2 && (
+          <ModerationPanel handleClose={handleClose} theme={theme}/>
+        )}
+      </Box>
+    </Box>
+  </ThemeProvider>)
 }
