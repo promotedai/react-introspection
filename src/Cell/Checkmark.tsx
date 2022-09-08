@@ -1,4 +1,3 @@
-import React from 'react'
 import { css, keyframes } from '@emotion/react'
 
 export const Checkmark = () => {
@@ -52,11 +51,11 @@ export const Checkmark = () => {
     <svg
       className='checkmark'
       xmlns='http://www.w3.org/2000/svg'
-      css={ checkmarkStyle }
+      css={checkmarkStyle}
       viewBox='0 0 52 52'
     >
-      <circle cx='26' cy='26' r='25' fill='none' css={ circleStyle } />
-      <path fill='none' d='M14.1 27.2l7.1 7.2 16.7-16.8' css={ pathStyle } />
+      <circle cx='26' cy='26' r='25' fill='none' css={circleStyle} />
+      <path fill='none' d='M14.1 27.2l7.1 7.2 16.7-16.8' css={pathStyle} />
     </svg>
   );
 }

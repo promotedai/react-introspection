@@ -1,5 +1,6 @@
 import React from 'react'
 import { MouseEvent, useState } from 'react'
+import { CellPopup } from './CellPopup'
 
 export enum PromotedIntrospectionCellTrigger {
 
@@ -51,25 +52,29 @@ export const PromotedIntrospectionCell = ({
     zIndex: 999,
   } as React.CSSProperties
 
+  const payload = JSON.parse(introspectionPayload)
+  const handleClose = () => setContextMenuOpen(false)
+
   return (
     <>
       <div onContextMenu={onContextMenu} style={cellContainer}>
         {renderItem(renderArgs)}
         {contextMenuOpen && (
-          <PromotedIntrospectionMenu
-              userId={'userId'}
-              logUserId={'logUserId'}
-              requestId={'requestId'}
-              insertionId={'insertionId'}
-              promotedRank="1"
-              retrievalRank="2"
-              algoliaRank="3"
-              pClick="2.153%"
-              pPurchase="0.032%"
-              queryRelevance="0.934"
-              personalization="0.785"
-              handleClose={() => setContextMenuOpen(false)}
-            />
+          <CellPopup
+            introspectionData={{
+              userId: payload.userId,
+              logUserId: payload.logUserId,
+              requestId: payload.requestId,
+              insertionId: payload.insertionId,
+              promotedRank: payload.promotedRank,
+              retrievalRank: payload.retrievalRank,
+              pClick: payload.pClick,
+              pPurchase: payload.pPurchase,
+              queryRelevance: payload.queryRelevance,
+              personalization: payload.personalization,
+            }}
+            handleClose={handleClose}
+          />
         )}
       </div>
       {contextMenuOpen && (
