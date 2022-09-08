@@ -1,0 +1,12 @@
+[
+  {
+    "path": "dist/react-introspection.esm.js",
+    "limit": "1 KB",
+    "webpack": false
+  },
+  {
+    "path": "dist/react-introspection.umd.js",
+    "limit": "1 KB",
+    "webpack": false
+  }
+]
