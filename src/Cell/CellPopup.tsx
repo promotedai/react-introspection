@@ -74,7 +74,6 @@ export const CellPopup = ({
           <Tab label='Stats'/>
           <Tab label='Properties'/>
           <Tab label='Moderation'/>
-          <Tab label='Moderation Log'/>
         </Tabs>
         {promotedLogoVisible &&
           <img
