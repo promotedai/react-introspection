@@ -1,3 +1,11 @@
+/**
+ * Software distributed under the Apache License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the
+ * specific language governing rights and limitations under the License.
+ *
+ * DERIVED FROM: https://github.com/stanleyxu2005/react-checkmark
+ * See https://github.com/promotedai/react-introspection/blob/main/LICENSE.apache
+ */
 import { css, keyframes } from '@emotion/react'
 
 export const Checkmark = () => {
