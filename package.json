@@ -1,5 +1,5 @@
 {
-  "name": "react-introspection",
+  "name": "@promotedai/react-introspection",
   "version": "1.0.0",
   "description": "Promoted Introspection integration for React web apps",
   "scripts": {
