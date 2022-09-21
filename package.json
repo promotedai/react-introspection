@@ -1,5 +1,6 @@
 {
   "name": "@promotedai/react-introspection",
+  "main": "dist/",
   "version": "1.0.0",
   "description": "Promoted Introspection integration for React web apps",
   "scripts": {
@@ -10,10 +11,12 @@
     "build:lib": "rollup -c",
     "updateLink": "npm run build:clean && npm run build && cd dist && npm link",
     "lint": "eslint './{src,app}/**/*.{ts,tsx}'",
-    "test": "jest --coverage",
+    "test": "jest --coverage --passWithNoTests",
     "test:watch": "jest --watchAll",
     "size": "size-limit",
-    "finish": "jest --coverage && npm run lint && npm run types"
+    "finish": "jest --coverage --passWithNoTests && npm run lint && npm run types",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -52,9 +55,13 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.3",
-    "@mui/material": "^5.10.4",
-    "react": "^18.2.0"
+    "@mui/material": "^5.10.4"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || 17 || 18",
+    "react-dom": "^16.8.0 || 17 || 18"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -62,15 +69,25 @@
     "@babel/preset-typescript": "^7.12.7",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@rollup/plugin-node-resolve": "^14.1.0",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/npm": "^7.0.9",
     "@semantic-release/release-notes-generator": "^9.0.1",
     "@size-limit/preset-small-lib": "^4.5.0",
+    "@storybook/addon-actions": "^6.5.12",
+    "@storybook/addon-essentials": "^6.5.12",
+    "@storybook/addon-interactions": "^6.5.12",
+    "@storybook/addon-links": "^6.5.12",
+    "@storybook/builder-webpack4": "^6.5.12",
+    "@storybook/manager-webpack4": "^6.5.12",
+    "@storybook/react": "^6.5.12",
+    "@storybook/testing-library": "^0.0.13",
     "@types/jest": "^26.0.0",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
     "@typescript-eslint/parser": "^4.12.0",
+    "babel-loader": "^8.2.5",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsdoc": "^30.0.3",
@@ -84,6 +101,7 @@
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-generate-package-json": "^3.2.0",
+    "rollup-plugin-node-externals": "^5.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.32.1",
     "semantic-release": "^17.3.1",
