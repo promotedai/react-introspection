@@ -21,8 +21,8 @@ jobs:
         with:
           always-auth: true
           node-version: 12
-          registry-url: "https://npm.pkg.github.com/promotedai"
-          scope: "@promotedai"
+          registry-url: 'https://npm.pkg.github.com/promotedai'
+          scope: '@promotedai'
 
       - name: Install dependencies
         run: npm i && npm config set access public

@@ -5,6 +5,7 @@ Promoted Introspection allows you to view critical data for your Delivery result
 ## Features
 
 Uses
+
 - Material UI
 - Emotion style support
 - [TypeScript](https://www.typescriptlang.org/) support
@@ -28,7 +29,7 @@ Uses
 If you want to test local changes in an actual deployment, use `npm link`.
 
 1. Run `npm run updateLink`.
-4. Go to client directory and run `npm link @promotedai/react-introspection`.
+2. Go to client directory and run `npm link @promotedai/react-introspection`.
 
 When you update `react-introspection`, run `npm run updateLink`.
 
@@ -36,4 +37,4 @@ When you want to undo, use `npm unlink` in `@promotedai/react-introspection/dist
 
 ## Deploy
 
-We use a GitHub action that runs semantic-release to determine how to update versions.  Just do a normal code review and this should work.  Depending on the message prefixes (e.g. `feat: `, `fix: `, `clean: `, `docs: `), it'll update the version appropriately.
+We use a GitHub action that runs semantic-release to determine how to update versions. Just do a normal code review and this should work. Depending on the message prefixes (e.g. `feat: `, `fix: `, `clean: `, `docs: `), it'll update the version appropriately.

@@ -1,5 +1,5 @@
-import { blue } from '@mui/material/colors';
-import { Theme } from '@mui/system';
+import { blue } from '@mui/material/colors'
+import { Theme } from '@mui/system'
 
 export const styles = {
   button: (theme: Theme) => ({
@@ -23,4 +23,4 @@ export const styles = {
     textAlign: 'right',
     marginLeft: 'auto',
   }),
-};
+}

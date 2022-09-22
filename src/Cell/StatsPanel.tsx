@@ -1,16 +1,16 @@
-import { Box, Button, Typography } from '@mui/material';
-import { Theme } from '@mui/system';
-import { useState } from 'react';
-import { Checkmark } from './Checkmark';
-import { formatting } from './formatting';
-import { styles } from './styles';
-import { CellIntrospectionData } from './types';
+import { Box, Button, Typography } from '@mui/material'
+import { Theme } from '@mui/system'
+import { useState } from 'react'
+import { Checkmark } from './Checkmark'
+import { formatting } from './formatting'
+import { styles } from './styles'
+import { CellIntrospectionData } from './types'
 
 export interface StatsPanelArgs {
-  introspectionData: CellIntrospectionData;
-  handleCopyButtonVisibilityChange: (visible: boolean) => any;
-  handleClose: () => any;
-  theme: Theme;
+  introspectionData: CellIntrospectionData
+  handleCopyButtonVisibilityChange: (visible: boolean) => any
+  handleClose: () => any
+  theme: Theme
 }
 
 const statsStyles = {
@@ -25,7 +25,7 @@ const statsStyles = {
   itemContent: {
     gridColumn: '3 / 5',
   },
-};
+}
 
 export const StatsPanel = ({
   introspectionData,
@@ -44,18 +44,18 @@ export const StatsPanel = ({
     pPurchase,
     queryRelevance,
     personalization,
-  } = introspectionData;
+  } = introspectionData
 
   const ids = [
     ['User ID', userId],
     ['Log User ID', logUserId],
     ['Request ID', requestId],
     ['Insertion ID', insertionId],
-  ];
+  ]
   const ranks = [
     ['Promoted', promotedRank],
     ['Retrieval', `${retrievalRank} (${formatting.difference((retrievalRank ?? 0) - (promotedRank ?? 0))})`],
-  ];
+  ]
   const stats = [
     ['p(Click)', pClick],
     ['p(Purchase)', pPurchase],
@@ -64,7 +64,7 @@ export const StatsPanel = ({
     ['Post-Click CVR', queryRelevance],
     ['Personalization', personalization],
     ['Price', queryRelevance],
-  ];
+  ]
 
   const introspectionRows = (
     title: string,
@@ -87,25 +87,25 @@ export const StatsPanel = ({
         </>
       ))}
     </>
-  );
+  )
 
-  const [copyButtonVisible, setCopyButtonVisible] = useState(true);
+  const [copyButtonVisible, setCopyButtonVisible] = useState(true)
   const handleCopyIds = () => {
-    setCopyButtonVisible(false);
-    handleCopyButtonVisibilityChange(false);
+    setCopyButtonVisible(false)
+    handleCopyButtonVisibilityChange(false)
     setTimeout(() => {
-      setCopyButtonVisible(true);
-      handleCopyButtonVisibilityChange(true);
-    }, 2000);
-  };
+      setCopyButtonVisible(true)
+      handleCopyButtonVisibilityChange(true)
+    }, 2000)
+  }
 
   const handleRequestReport = () => {
-    const link = document.createElement('a');
+    const link = document.createElement('a')
     link.href = `mailto:introspection@promoted.ai?subject=${encodeURIComponent(
       'Introspection Report Request'
-    )}&body=${encodeURIComponent(JSON.stringify({ userId, logUserId, requestId, insertionId }))}`;
-    link.click();
-  };
+    )}&body=${encodeURIComponent(JSON.stringify({ userId, logUserId, requestId, insertionId }))}`
+    link.click()
+  }
 
   return (
     <Box
@@ -147,5 +147,5 @@ export const StatsPanel = ({
         </Button>
       </Box>
     </Box>
-  );
-};
+  )
+}

@@ -1,8 +1,8 @@
-import { terser } from 'rollup-plugin-terser';
-import typescript from 'rollup-plugin-typescript2';
-import del from 'rollup-plugin-delete';
-import pkg from './package.json';
-import externals from 'rollup-plugin-node-externals';
+import { terser } from 'rollup-plugin-terser'
+import typescript from 'rollup-plugin-typescript2'
+import del from 'rollup-plugin-delete'
+import pkg from './package.json'
+import externals from 'rollup-plugin-node-externals'
 
 export default [
   {
@@ -31,4 +31,4 @@ export default [
       { file: `dist/react-introspection.esm.js`, format: 'es', sourcemap: true },
     ],
   },
-];
+]

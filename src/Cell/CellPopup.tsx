@@ -1,15 +1,15 @@
-import { Box, Tab, Tabs } from '@mui/material';
-import { Theme, ThemeProvider } from '@mui/system';
-import { createTheme } from '@mui/material/styles';
-import { CSSProperties, SyntheticEvent, useState } from 'react';
-import { ModerationPanel } from './ModerationPanel';
-import { PropertiesPanel } from './PropertiesPanel';
-import { StatsPanel } from './StatsPanel';
-import { CellIntrospectionData } from './types';
+import { Box, Tab, Tabs } from '@mui/material'
+import { Theme, ThemeProvider } from '@mui/system'
+import { createTheme } from '@mui/material/styles'
+import { CSSProperties, SyntheticEvent, useState } from 'react'
+import { ModerationPanel } from './ModerationPanel'
+import { PropertiesPanel } from './PropertiesPanel'
+import { StatsPanel } from './StatsPanel'
+import { CellIntrospectionData } from './types'
 
 export interface CellPopupArgs {
-  introspectionData: CellIntrospectionData;
-  handleClose: () => any;
+  introspectionData: CellIntrospectionData
+  handleClose: () => any
 }
 
 const popupStyles = {
@@ -44,7 +44,7 @@ const popupStyles = {
     position: 'absolute',
     width: '20px',
   } as CSSProperties,
-};
+}
 
 export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => {
   const theme = createTheme({
@@ -53,16 +53,16 @@ export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => 
         fontSize: 12,
       },
     },
-  });
+  })
 
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(0)
   const handleTabChange = (_: SyntheticEvent, newTabIndex: number) => {
-    setTabIndex(newTabIndex);
-  };
-  const [promotedLogoVisible, setPromotedLogoVisible] = useState(true);
+    setTabIndex(newTabIndex)
+  }
+  const [promotedLogoVisible, setPromotedLogoVisible] = useState(true)
   const handleCopyButtonVisibilityChange = (visible: boolean) => {
-    setPromotedLogoVisible(visible);
-  };
+    setPromotedLogoVisible(visible)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -93,5 +93,5 @@ export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => 
         </Box>
       </Box>
     </ThemeProvider>
-  );
-};
+  )
+}
