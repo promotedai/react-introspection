@@ -10,15 +10,15 @@ import {
   SelectChangeEvent,
   Slider,
   Typography,
-} from '@mui/material';
-import { Theme } from '@mui/system';
-import { useState } from 'react';
-import { formatting } from './formatting';
-import { styles } from './styles';
+} from '@mui/material'
+import { Theme } from '@mui/system'
+import { useState } from 'react'
+import { formatting } from './formatting'
+import { styles } from './styles'
 
 export interface ModerationPanelArgs {
-  handleClose: () => any;
-  theme: Theme;
+  handleClose: () => any
+  theme: Theme
 }
 
 const moderationStyles = {
@@ -32,21 +32,21 @@ const moderationStyles = {
   radio: {
     padding: '0 8px',
   },
-};
+}
 
 export const ModerationPanel = ({ handleClose, theme }: ModerationPanelArgs) => {
-  const [moderationScope, setModerationScope] = useState('global');
+  const [moderationScope, setModerationScope] = useState('global')
   const handleModerationScopeChange = (e: SelectChangeEvent<string>) => {
-    setModerationScope(e.target.value);
-  };
-  const [moderationAction, setModerationAction] = useState('send-to-review');
+    setModerationScope(e.target.value)
+  }
+  const [moderationAction, setModerationAction] = useState('send-to-review')
   const handleModerationActionChange = (e: SelectChangeEvent<string>) => {
-    setModerationAction(e.target.value);
-  };
-  const [rankChangePercent, setRankChangePercent] = useState(0);
+    setModerationAction(e.target.value)
+  }
+  const [rankChangePercent, setRankChangePercent] = useState(0)
   const handleRankChangePercentChange = (_: Event, newValue: number) => {
-    setRankChangePercent(newValue);
-  };
+    setRankChangePercent(newValue)
+  }
 
   return (
     <Box
@@ -120,5 +120,5 @@ export const ModerationPanel = ({ handleClose, theme }: ModerationPanelArgs) => 
         </Button>
       </Box>
     </Box>
-  );
-};
+  )
+}

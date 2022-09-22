@@ -1,5 +1,5 @@
-import { ComponentType, CSSProperties, MouseEvent, useState } from 'react';
-import { CellPopup } from './CellPopup';
+import { ComponentType, CSSProperties, MouseEvent, useState } from 'react'
+import { CellPopup } from './CellPopup'
 
 export enum PromotedIntrospectionCellTrigger {
   ContextMenu = 1,
@@ -8,9 +8,9 @@ export enum PromotedIntrospectionCellTrigger {
 }
 
 export interface PromotedIntrospectionCellArgs {
-  introspectionPayload: string;
-  renderItem: (args: any) => any;
-  trigger: PromotedIntrospectionCellTrigger;
+  introspectionPayload: string
+  renderItem: (args: any) => any
+  trigger: PromotedIntrospectionCellTrigger
 }
 
 export const PromotedIntrospectionCell = ({
@@ -19,17 +19,17 @@ export const PromotedIntrospectionCell = ({
   trigger,
   ...renderArgs
 }: PromotedIntrospectionCellArgs) => {
-  const [contextMenuOpen, setContextMenuOpen] = useState(false);
+  const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const onContextMenu = (e: MouseEvent) => {
     if (!contextMenuOpen) {
-      e.preventDefault();
-      setContextMenuOpen(true);
+      e.preventDefault()
+      setContextMenuOpen(true)
     }
-  };
+  }
   const onClickBackground = (e: MouseEvent) => {
-    e.preventDefault();
-    setContextMenuOpen(false);
-  };
+    e.preventDefault()
+    setContextMenuOpen(false)
+  }
   const cellContainer = {
     position: 'relative',
     ...(contextMenuOpen
@@ -38,7 +38,7 @@ export const PromotedIntrospectionCell = ({
           zIndex: 1000,
         }
       : {}),
-  } as CSSProperties;
+  } as CSSProperties
   const backgroundContainer = {
     background: 'black',
     height: '100%',
@@ -48,10 +48,10 @@ export const PromotedIntrospectionCell = ({
     top: '0',
     width: '100%',
     zIndex: 999,
-  } as CSSProperties;
+  } as CSSProperties
 
-  const payload = JSON.parse(introspectionPayload);
-  const handleClose = () => setContextMenuOpen(false);
+  const payload = JSON.parse(introspectionPayload)
+  const handleClose = () => setContextMenuOpen(false)
 
   return (
     <>
@@ -77,8 +77,8 @@ export const PromotedIntrospectionCell = ({
       </div>
       {contextMenuOpen && <div onClick={onClickBackground} style={backgroundContainer} />}
     </>
-  );
-};
+  )
+}
 
 export const withPromotedIntrospectionCell = (WrappedComponent: ComponentType) => (props: any) =>
-  <PromotedIntrospectionCell renderItem={() => <WrappedComponent {...props} />} {...props} />;
+  <PromotedIntrospectionCell renderItem={() => <WrappedComponent {...props} />} {...props} />

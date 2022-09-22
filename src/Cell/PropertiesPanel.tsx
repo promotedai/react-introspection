@@ -1,4 +1,4 @@
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import {
   Box,
   Button,
@@ -12,21 +12,21 @@ import {
   TableContainer,
   TableRow,
   Typography,
-} from '@mui/material';
-import { Theme } from '@mui/system';
-import { useState } from 'react';
-import { styles } from './styles';
+} from '@mui/material'
+import { Theme } from '@mui/system'
+import { useState } from 'react'
+import { styles } from './styles'
 
 export interface PropertiesPanelArgs {
-  handleClose: () => any;
-  theme: Theme;
+  handleClose: () => any
+  theme: Theme
 }
 
 class propertiesStyles {
   static tableContainer = {
     maxHeight: '400px',
     width: '100%',
-  };
+  }
 }
 
 const fakeItemProps = [
@@ -58,7 +58,7 @@ const fakeItemProps = [
   ['Feature Has Zoom Box', 0.0296],
   ['Item Count Checkout 30DAY', 0.037],
   ['Item Rate Raw Checkout Navigate 7DAY', 0.0296],
-];
+]
 
 export const PropertiesPanel = ({ handleClose, theme }: PropertiesPanelArgs) => {
   const propertiesTable = (props: (string | number)[][]) => (
@@ -78,22 +78,22 @@ export const PropertiesPanel = ({ handleClose, theme }: PropertiesPanelArgs) => 
         </TableBody>
       </Table>
     </TableContainer>
-  );
+  )
 
-  const [itemPropertiesOpen, setItemPropertiesOpen] = useState(false);
+  const [itemPropertiesOpen, setItemPropertiesOpen] = useState(false)
   const handleItemPropertiesToggle = () => {
-    setItemPropertiesOpen(!itemPropertiesOpen);
-  };
-  const [queryPropertiesOpen, setQueryPropertiesOpen] = useState(false);
+    setItemPropertiesOpen(!itemPropertiesOpen)
+  }
+  const [queryPropertiesOpen, setQueryPropertiesOpen] = useState(false)
   const handleQueryPropertiesToggle = () => {
-    setQueryPropertiesOpen(!queryPropertiesOpen);
-  };
+    setQueryPropertiesOpen(!queryPropertiesOpen)
+  }
   const handleDownloadProperties = () => {
-    const link = document.createElement('a');
-    link.download = 'properties.csv';
-    link.href = './properties.csv';
-    link.click();
-  };
+    const link = document.createElement('a')
+    link.download = 'properties.csv'
+    link.href = './properties.csv'
+    link.click()
+  }
 
   return (
     <Box>
@@ -122,5 +122,5 @@ export const PropertiesPanel = ({ handleClose, theme }: PropertiesPanelArgs) => 
         </Button>
       </Box>
     </Box>
-  );
-};
+  )
+}

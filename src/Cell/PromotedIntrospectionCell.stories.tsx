@@ -1,20 +1,20 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { PromotedIntrospectionCell } from './PromotedIntrospectionCell';
-import { Card } from '@mui/material';
+import { PromotedIntrospectionCell } from './PromotedIntrospectionCell'
+import { Card } from '@mui/material'
 
 export default {
   title: 'PromotedIntrospectionCell',
   component: PromotedIntrospectionCell,
-} as ComponentMeta<typeof PromotedIntrospectionCell>;
+} as ComponentMeta<typeof PromotedIntrospectionCell>
 
 const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
     <PromotedIntrospectionCell {...args} />
   </div>
-);
+)
 
-export const Primary = Template.bind({});
+export const Primary = Template.bind({})
 
 Primary.args = {
   introspectionPayload: JSON.stringify({
@@ -44,4 +44,4 @@ Primary.args = {
       Some search result
     </Card>
   ),
-};
+}
