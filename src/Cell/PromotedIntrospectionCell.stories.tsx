@@ -10,38 +10,29 @@ export default {
 
 const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    <PromotedIntrospectionCell {...args} />
+    <PromotedIntrospectionCell {...args}>
+      <Card
+        sx={{ height: 300, width: 200 }}
+        style={{
+          textAlign: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+          display: 'flex',
+          margin: 'auto',
+          width: '100px',
+        }}
+      >
+        Some search result
+      </Card>
+    </PromotedIntrospectionCell>
   </div>
 )
 
-export const Primary = Template.bind({})
+export const Default = Template.bind({})
 
-Primary.args = {
-  introspectionPayload: JSON.stringify({
-    userId: 'some-user',
-    logUserId: 'some-log-user',
-    requestId: 'some-request',
-    insertionId: 'some-insertion',
-    promotedRank: 2,
-    retrievalRank: 3,
-    pClick: 0.07,
-    pPurchase: 0.01,
-    queryRelavance: 0.5,
-    personalization: 'some personalization',
-  }),
-  renderItem: () => (
-    <Card
-      sx={{ height: 300, width: 200 }}
-      style={{
-        textAlign: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        display: 'flex',
-        margin: 'auto',
-        width: '100px',
-      }}
-    >
-      Some search result
-    </Card>
-  ),
+Default.args = {
+  introspectionEndpoint: 'www.foo.com',
+  item: {
+    insertionId: 'abc',
+  },
 }
