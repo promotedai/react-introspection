@@ -4,4 +4,4 @@ export {
   PromotedIntrospectionCellTrigger,
 } from './Cell/PromotedIntrospectionCell'
 
-export { withPromotedInspection } from './withPromotedInspection'
+export { withPromotedIntrospection } from './withPromotedIntrospection'

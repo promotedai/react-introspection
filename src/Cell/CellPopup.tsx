@@ -1,18 +1,19 @@
-import { Box, Tab, Tabs } from '@mui/material'
-import { Theme, ThemeProvider } from '@mui/system'
-import { createTheme } from '@mui/material/styles'
-import { CSSProperties, SyntheticEvent, useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
+import { Box, Tab, Tabs, ThemeProvider } from '@material-ui/core'
+import { createTheme } from '@material-ui/core'
 import { ModerationPanel } from './ModerationPanel'
 import { PropertiesPanel } from './PropertiesPanel'
 import { StatsPanel } from './StatsPanel'
 import { CellIntrospectionData } from './types'
+import { makeStyles } from '@material-ui/core/styles'
+import { blue } from '@material-ui/core/colors'
 
 export interface CellPopupArgs {
   introspectionData: CellIntrospectionData
   handleClose: () => any
 }
 
-const popupStyles = {
+const useStyles = makeStyles((theme) => ({
   outerContainer: {
     color: 'black',
     left: '-412px',
@@ -21,13 +22,13 @@ const popupStyles = {
     top: '50%',
     transform: 'translateY(-50%)',
     width: '400px',
-    zIndex: '1001',
+    zIndex: 1001,
   },
-  innerContainer: (theme: Theme) => ({
+  innerContainer: {
     background: '#eee',
     paddingTop: theme.spacing(1),
     position: 'relative',
-  }),
+  },
   callout: {
     backgroundColor: '#eee',
     transform: 'rotate(45deg) translateX(-50%)',
@@ -43,8 +44,8 @@ const popupStyles = {
     left: '20px',
     position: 'absolute',
     width: '20px',
-  } as CSSProperties,
-}
+  },
+}))
 
 export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => {
   const theme = createTheme({
@@ -53,7 +54,12 @@ export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => 
         fontSize: 12,
       },
     },
+    palette: {
+      primary: blue,
+    },
   })
+
+  const classes = useStyles(theme)
 
   const [tabIndex, setTabIndex] = useState(0)
   const handleTabChange = (_: SyntheticEvent, newTabIndex: number) => {
@@ -66,16 +72,16 @@ export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => 
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={popupStyles.outerContainer}>
-        <Box boxShadow={4} sx={popupStyles.innerContainer}>
-          <Box sx={popupStyles.callout} />
-          <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable">
+      <Box className={classes.outerContainer}>
+        <Box boxShadow={4} className={classes.innerContainer}>
+          <Box className={classes.callout} />
+          <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
             <Tab label="Stats" />
             <Tab label="Properties" />
             <Tab label="Moderation" />
           </Tabs>
           {promotedLogoVisible && (
-            <img style={popupStyles.promotedLogo} src="https://avatars.githubusercontent.com/t/3500892?s=280&v=4" />
+            <img className={classes.promotedLogo} src="https://avatars.githubusercontent.com/t/3500892?s=280&v=4" />
           )}
 
           {tabIndex == 0 && (

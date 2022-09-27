@@ -1,7 +1,9 @@
+import React from 'react'
+
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { PromotedIntrospectionCell } from './PromotedIntrospectionCell'
-import { Card } from '@mui/material'
+import { Card } from '@material-ui/core'
 
 export default {
   title: 'PromotedIntrospectionCell',
@@ -12,14 +14,14 @@ const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
     <PromotedIntrospectionCell {...args}>
       <Card
-        sx={{ height: 300, width: 200 }}
         style={{
+          height: 300,
+          width: 200,
           textAlign: 'center',
           alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
           margin: 'auto',
-          width: '100px',
         }}
       >
         Some search result
