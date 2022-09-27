@@ -2,6 +2,7 @@ import React, { SyntheticEvent, useState } from 'react'
 import { Box, Tab, Tabs, ThemeProvider } from '@material-ui/core'
 import { createTheme } from '@material-ui/core'
 import { ModerationPanel } from './ModerationPanel'
+import { ModerationLogPanel } from './ModerationLogPanel'
 import { PropertiesPanel } from './PropertiesPanel'
 import { StatsPanel } from './StatsPanel'
 import { CellIntrospectionData } from './types'
@@ -79,6 +80,7 @@ export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => 
             <Tab label="Stats" />
             <Tab label="Properties" />
             <Tab label="Moderation" />
+            <Tab label="Moderation Log" />
           </Tabs>
           {promotedLogoVisible && (
             <img className={classes.promotedLogo} src="https://avatars.githubusercontent.com/t/3500892?s=280&v=4" />
@@ -96,6 +98,7 @@ export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => 
           {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
 
           {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
+          {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
         </Box>
       </Box>
     </ThemeProvider>
