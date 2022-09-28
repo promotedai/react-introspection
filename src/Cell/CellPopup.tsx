@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react'
+import React, { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Box, Tab, Tabs, ThemeProvider } from '@material-ui/core'
 import { createTheme } from '@material-ui/core'
 import { ModerationPanel } from './ModerationPanel'
@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
 
 export interface CellPopupArgs {
+  triggerContainerRef: React.RefObject<HTMLDivElement>
   introspectionData: CellIntrospectionData
   handleClose: () => any
 }
@@ -17,13 +18,9 @@ export interface CellPopupArgs {
 const useStyles = makeStyles((theme) => ({
   outerContainer: {
     color: 'black',
-    left: '-412px',
-    padding: '20px',
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
     width: '400px',
     zIndex: 1001,
+    maxHeight: '100vh',
   },
   innerContainer: {
     background: '#eee',
@@ -48,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => {
+export const CellPopup = ({ triggerContainerRef, introspectionData, handleClose }: CellPopupArgs) => {
   const theme = createTheme({
     typography: {
       body1: {
@@ -59,6 +56,8 @@ export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => 
       primary: blue,
     },
   })
+
+  const popupContainerRef = useRef<HTMLDivElement>(null)
 
   const classes = useStyles(theme)
 
@@ -71,36 +70,72 @@ export const CellPopup = ({ introspectionData, handleClose }: CellPopupArgs) => 
     setPromotedLogoVisible(visible)
   }
 
+  const repositionPopup = useCallback(() => {
+    if (!triggerContainerRef.current || !popupContainerRef.current) return
+    const triggerRect = triggerContainerRef.current.getBoundingClientRect()
+    const popupRect = popupContainerRef.current.getBoundingClientRect()
+
+    popupContainerRef.current.style.position = 'absolute'
+    popupContainerRef.current.style.left = `${-Math.min(popupRect.width + 25, triggerRect.x)}px`
+    popupContainerRef.current.style.top = `${-(popupRect.height - triggerRect.height) / 2}px`
+  }, [])
+
+  useEffect(() => {
+    repositionPopup()
+  }, [repositionPopup])
+
+  const resizeObserver = useMemo(() => {
+    return new ResizeObserver(() => {
+      repositionPopup()
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!popupContainerRef.current) return
+
+    resizeObserver.observe(popupContainerRef.current)
+    window.addEventListener('resize', repositionPopup)
+
+    return () => {
+      if (popupContainerRef.current) {
+        resizeObserver.unobserve(popupContainerRef.current)
+      }
+      window.removeEventListener('resize', repositionPopup)
+    }
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
-      <Box className={classes.outerContainer}>
-        <Box boxShadow={4} className={classes.innerContainer}>
-          <Box className={classes.callout} />
-          <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
-            <Tab label="Stats" />
-            <Tab label="Properties" />
-            <Tab label="Moderation" />
-            <Tab label="Moderation Log" />
-          </Tabs>
-          {promotedLogoVisible && (
-            <img className={classes.promotedLogo} src="https://avatars.githubusercontent.com/t/3500892?s=280&v=4" />
-          )}
+      <div ref={popupContainerRef}>
+        <Box className={classes.outerContainer}>
+          <Box boxShadow={4} className={classes.innerContainer}>
+            <Box className={classes.callout} />
+            <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
+              <Tab label="Stats" />
+              <Tab label="Properties" />
+              <Tab label="Moderation" />
+              <Tab label="Moderation Log" />
+            </Tabs>
+            {promotedLogoVisible && (
+              <img className={classes.promotedLogo} src="https://avatars.githubusercontent.com/t/3500892?s=280&v=4" />
+            )}
 
-          {tabIndex == 0 && (
-            <StatsPanel
-              introspectionData={introspectionData}
-              handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
-              handleClose={handleClose}
-              theme={theme}
-            />
-          )}
+            {tabIndex == 0 && (
+              <StatsPanel
+                introspectionData={introspectionData}
+                handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
+                handleClose={handleClose}
+                theme={theme}
+              />
+            )}
 
-          {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
+            {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
 
-          {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
-          {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
+            {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
+            {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
+          </Box>
         </Box>
-      </Box>
+      </div>
     </ThemeProvider>
   )
 }

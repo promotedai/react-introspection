@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { Suspense, useRef } from 'react'
 import { CSSProperties, MouseEvent, ReactNode, useEffect, useState } from 'react'
-import { CellPopup } from './CellPopup'
 import { CellIntrospectionData } from './types'
+
+const CellPopup = React.lazy(() => import('./CellPopup').then(({ CellPopup }) => ({ default: CellPopup })))
 
 export enum PromotedIntrospectionCellTrigger {
   ContextMenu = 1,
@@ -25,6 +26,8 @@ export const PromotedIntrospectionCell = ({
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [payload, setPayload] = useState<CellIntrospectionData | undefined>()
   trigger
+
+  const triggerContainerRef = useRef<HTMLDivElement>(null)
 
   // TODO:  Update this function to extract the metadata from the provided item.
   // This is likely where the integration with the API will happen
@@ -87,26 +90,36 @@ export const PromotedIntrospectionCell = ({
 
   const handleClose = () => setContextMenuOpen(false)
 
+  useEffect(() => {
+    const body = document.querySelector('body')
+    if (!body) return
+
+    body.style.overflow = contextMenuOpen && introspectionEndpoint ? 'hidden' : 'initial'
+  }, [contextMenuOpen])
+
   return (
     <>
       <div onContextMenu={onContextMenu} style={cellContainer}>
-        {children}
+        <div ref={triggerContainerRef}>{children}</div>
         {contextMenuOpen && payload && (
-          <CellPopup
-            introspectionData={{
-              userId: payload.userId,
-              logUserId: payload.logUserId,
-              requestId: payload.requestId,
-              insertionId: payload.insertionId,
-              promotedRank: payload.promotedRank,
-              retrievalRank: payload.retrievalRank,
-              pClick: payload.pClick,
-              pPurchase: payload.pPurchase,
-              queryRelevance: payload.queryRelevance,
-              personalization: payload.personalization,
-            }}
-            handleClose={handleClose}
-          />
+          <Suspense fallback={<></>}>
+            <CellPopup
+              triggerContainerRef={triggerContainerRef}
+              introspectionData={{
+                userId: payload.userId,
+                logUserId: payload.logUserId,
+                requestId: payload.requestId,
+                insertionId: payload.insertionId,
+                promotedRank: payload.promotedRank,
+                retrievalRank: payload.retrievalRank,
+                pClick: payload.pClick,
+                pPurchase: payload.pPurchase,
+                queryRelevance: payload.queryRelevance,
+                personalization: payload.personalization,
+              }}
+              handleClose={handleClose}
+            />
+          </Suspense>
         )}
       </div>
       {contextMenuOpen && <div onClick={onClickBackground} style={backgroundContainer} />}
