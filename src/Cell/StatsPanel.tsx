@@ -1,5 +1,7 @@
-import { Box, Button, Typography } from '@mui/material'
-import { Theme } from '@mui/system'
+import React from 'react'
+import { Box, Button, makeStyles, Typography } from '@material-ui/core'
+import { Theme } from '@material-ui/core'
+import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import { useState } from 'react'
 import { Checkmark } from './Checkmark'
 import { formatting } from './formatting'
@@ -21,11 +23,29 @@ const statsStyles = {
   itemLabel: {
     gridColumn: '1 / 3',
     textAlign: 'right',
-  },
+  } as CSSProperties,
   itemContent: {
     gridColumn: '3 / 5',
   },
+  copied: {
+    alignContent: 'center',
+    display: 'inline-grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    marginRight: '8px',
+    verticalAlign: 'middle',
+  },
+  copied__inner: {
+    gridColumn: '1 / 2',
+    marginRight: '4px',
+  },
+  copied__text: {
+    fontSize: 14,
+    gridColumn: '2 / 4',
+  },
 }
+
+const useSharedStyles = makeStyles(styles)
+const useStyles = makeStyles(statsStyles)
 
 export const StatsPanel = ({
   introspectionData,
@@ -45,6 +65,9 @@ export const StatsPanel = ({
     queryRelevance,
     personalization,
   } = introspectionData
+
+  const sharedClasses = useSharedStyles(theme)
+  const classes = useStyles(theme)
 
   const ids = [
     ['User ID', userId],
@@ -73,7 +96,7 @@ export const StatsPanel = ({
     contentColumns: any
   ) => (
     <>
-      <Box sx={statsStyles.header}>
+      <Box className={classes.header}>
         <Typography>{title}</Typography>
       </Box>
       {content.map((item) => (
@@ -108,41 +131,28 @@ export const StatsPanel = ({
   }
 
   return (
-    <Box
-      sx={{
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        ...styles.tabContentContainer(theme),
-      }}
-    >
+    <Box className={`${sharedClasses['tabContentContainer']} ${sharedClasses['tabContentContainer--equal-columns']}`}>
       {introspectionRows('IDs', ids, '1 / 2', '2 / 5')}
       {introspectionRows('Ranks', ranks, '1 / 3', '3 / 5')}
       {introspectionRows('Statistics', stats, '1 / 3', '3 / 5')}
 
-      <Box sx={styles.buttonContainer(theme)}>
+      <Box className={sharedClasses.buttonContainer}>
         {copyButtonVisible ? (
-          <Button onClick={handleCopyIds} sx={styles.button(theme)} variant="outlined">
+          <Button className={sharedClasses.button} onClick={handleCopyIds} variant="outlined">
             Copy
           </Button>
         ) : (
-          <Box
-            sx={{
-              alignContent: 'center',
-              display: 'inline-grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              marginRight: '8px',
-              verticalAlign: 'middle',
-            }}
-          >
-            <Box sx={{ gridColumn: '1 / 2', marginRight: '4px' }}>
+          <Box className={classes.copied}>
+            <Box className={classes.copied__inner}>
               <Checkmark />
             </Box>
-            <Typography sx={{ fontSize: 14, gridColumn: '2 / 4' }}>Copied</Typography>
+            <Typography className={classes.copied__text}>Copied</Typography>
           </Box>
         )}
-        <Button onClick={handleRequestReport} sx={styles.button(theme)} variant="outlined">
+        <Button className={sharedClasses.button} onClick={handleRequestReport} variant="outlined">
           Request Report...
         </Button>
-        <Button onClick={handleClose} sx={styles.button(theme)} variant="contained">
+        <Button onClick={handleClose} className={sharedClasses.button} variant="contained">
           Close
         </Button>
       </Box>

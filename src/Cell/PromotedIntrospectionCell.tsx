@@ -1,3 +1,4 @@
+import React from 'react'
 import { CSSProperties, MouseEvent, ReactNode, useEffect, useState } from 'react'
 import { CellPopup } from './CellPopup'
 import { CellIntrospectionData } from './types'

@@ -20,12 +20,6 @@ export default [
         name: pkg.name,
         file: `dist/react-introspection.umd.js`,
         format: 'umd',
-        globals: {
-          react: 'React',
-          '@emotion/react': '@emotion/react',
-          '@mui/icons-material': '@mui/icons-material',
-          '@mui/material': '@mui/material',
-        },
         sourcemap: true,
       },
       { file: `dist/react-introspection.esm.js`, format: 'es', sourcemap: true },

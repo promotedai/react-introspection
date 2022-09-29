@@ -1,19 +1,22 @@
-import { ExpandLess, ExpandMore } from '@mui/icons-material'
+import React from 'react'
+import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import {
   Box,
   Button,
   Collapse,
   List,
-  ListItemButton,
+  ListItem,
   ListItemText,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
   Typography,
-} from '@mui/material'
-import { Theme } from '@mui/system'
+} from '@material-ui/core'
+import { Theme } from '@material-ui/core'
+import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import { useState } from 'react'
 import { styles } from './styles'
 
@@ -22,12 +25,24 @@ export interface PropertiesPanelArgs {
   theme: Theme
 }
 
-class propertiesStyles {
-  static tableContainer = {
+const propertiesStyles = {
+  tableContainer: {
     maxHeight: '400px',
     width: '100%',
-  }
+  },
+  ctas: {
+    padding: '0 20px 20px 20px',
+  },
+  list: {
+    width: '100%',
+  },
+  listItemText: {
+    fontWeight: 'bold',
+  } as CSSProperties,
 }
+
+const useStyles = makeStyles(propertiesStyles)
+const useSharedStyles = makeStyles(styles)
 
 const fakeItemProps = [
   ['Feature Haversine Distance Miles', 0.0036],
@@ -61,8 +76,11 @@ const fakeItemProps = [
 ]
 
 export const PropertiesPanel = ({ handleClose, theme }: PropertiesPanelArgs) => {
+  const sharedClasses = useSharedStyles(theme)
+  const classes = useStyles()
+
   const propertiesTable = (props: (string | number)[][]) => (
-    <TableContainer sx={propertiesStyles.tableContainer}>
+    <TableContainer className={classes.tableContainer}>
       <Table size="small">
         <TableBody>
           {props.map((row) => (
@@ -97,27 +115,27 @@ export const PropertiesPanel = ({ handleClose, theme }: PropertiesPanelArgs) => 
 
   return (
     <Box>
-      <List sx={{ width: '100%' }}>
-        <ListItemButton onClick={handleItemPropertiesToggle}>
-          <ListItemText primary="Item Properties" primaryTypographyProps={{ fontWeight: 'bold' }} />
+      <List className={classes.list}>
+        <ListItem button onClick={handleItemPropertiesToggle}>
+          <ListItemText className={classes.listItemText} primary="Item Properties" />
           {itemPropertiesOpen ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
+        </ListItem>
         <Collapse in={itemPropertiesOpen} unmountOnExit>
           {propertiesTable(fakeItemProps)}
         </Collapse>
-        <ListItemButton onClick={handleQueryPropertiesToggle}>
-          <ListItemText primary="Query Properties" primaryTypographyProps={{ fontWeight: 'bold' }} />
+        <ListItem button onClick={handleQueryPropertiesToggle}>
+          <ListItemText className={classes.listItemText} primary="Query Properties" />
           {queryPropertiesOpen ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
+        </ListItem>
         <Collapse in={queryPropertiesOpen} unmountOnExit>
           {propertiesTable(fakeItemProps)}
         </Collapse>
       </List>
-      <Box sx={{ padding: '0 20px 20px 20px', ...styles.buttonContainer(theme) }}>
-        <Button onClick={handleDownloadProperties} sx={styles.button(theme)} variant="outlined">
+      <Box className={`${sharedClasses.buttonContainer} ${classes.ctas}`}>
+        <Button className={sharedClasses.button} onClick={handleDownloadProperties} variant="outlined">
           Download...
         </Button>
-        <Button onClick={handleClose} sx={styles.button(theme)} variant="contained">
+        <Button className={sharedClasses.button} onClick={handleClose} variant="contained">
           Close
         </Button>
       </Box>

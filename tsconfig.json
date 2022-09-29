@@ -15,8 +15,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "@emotion/react"
+    "jsx": "react"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "example", "**/*.test.tsx"]
