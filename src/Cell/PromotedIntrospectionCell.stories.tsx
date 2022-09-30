@@ -38,3 +38,50 @@ Default.args = {
     insertionId: 'abc',
   },
 }
+
+export const CustomTrigger = Template.bind({})
+
+CustomTrigger.args = {
+  introspectionEndpoint: 'www.foo.com',
+  item: {
+    insertionId: 'abc',
+  },
+  renderTrigger: (onTrigger: () => any) => {
+    return (
+      <button style={{ position: 'absolute', top: 5, left: 5 }} onClick={onTrigger}>
+        trigger
+      </button>
+    )
+  },
+}
+
+export const Controlled = () => {
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <button onClick={() => setIsOpen(true)}>Open</button>
+      <PromotedIntrospectionCell
+        isOpen={isOpen}
+        disableDefaultTrigger
+        item={{ insertionId: 'abc' }}
+        introspectionEndpoint="www.foo.com"
+        onClose={() => setIsOpen(false)}
+      >
+        <Card
+          style={{
+            height: 300,
+            width: 200,
+            textAlign: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+            display: 'flex',
+            margin: 'auto',
+          }}
+        >
+          Some search result
+        </Card>
+      </PromotedIntrospectionCell>
+    </div>
+  )
+}

@@ -13,28 +13,30 @@ export enum PromotedIntrospectionCellTrigger {
 export interface PromotedIntrospectionCellArgs {
   introspectionEndpoint: string
   children: ReactNode
-  trigger?: PromotedIntrospectionCellTrigger
   item: { insertionId: string }
+  isOpen?: boolean
+  renderTrigger?: (onTrigger: (e: Event) => any) => ReactNode
+  disableDefaultTrigger?: boolean
+  onClose?: () => any
 }
 
 export const PromotedIntrospectionCell = ({
   item,
   introspectionEndpoint,
   children,
-  trigger,
+  renderTrigger,
+  disableDefaultTrigger,
+  isOpen,
+  onClose,
 }: PromotedIntrospectionCellArgs) => {
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [payload, setPayload] = useState<CellIntrospectionData | undefined>()
-  trigger
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
 
   // TODO:  Update this function to extract the metadata from the provided item.
   // This is likely where the integration with the API will happen
   const getIntrospectionPayload = async () => {
-    console.log('insertionId', item.insertionId)
-    console.log('introspecitonEndpoint', introspectionEndpoint)
-
     // MOCK
     return {
       userId: 'userId',
@@ -51,21 +53,30 @@ export const PromotedIntrospectionCell = ({
   }
 
   useEffect(() => {
+    setContextMenuOpen(Boolean(isOpen))
+  }, [isOpen])
+
+  useEffect(() => {
     if (contextMenuOpen && introspectionEndpoint && item.insertionId) {
       getIntrospectionPayload().then(setPayload)
     }
   }, [item, introspectionEndpoint, contextMenuOpen])
 
-  const onContextMenu = (e: MouseEvent) => {
+  const onTrigger = (e: Event | MouseEvent) => {
     if (!contextMenuOpen && introspectionEndpoint) {
       e.preventDefault()
       setContextMenuOpen(true)
     }
   }
 
+  const handleClose = () => {
+    setContextMenuOpen(false)
+    onClose?.()
+  }
+
   const onClickBackground = (e: MouseEvent) => {
     e.preventDefault()
-    setContextMenuOpen(false)
+    handleClose()
   }
 
   const cellContainer = {
@@ -88,8 +99,6 @@ export const PromotedIntrospectionCell = ({
     zIndex: 999,
   } as CSSProperties
 
-  const handleClose = () => setContextMenuOpen(false)
-
   useEffect(() => {
     const body = document.querySelector('body')
     if (!body) return
@@ -99,7 +108,8 @@ export const PromotedIntrospectionCell = ({
 
   return (
     <>
-      <div onContextMenu={onContextMenu} style={cellContainer}>
+      <div onContextMenu={!disableDefaultTrigger ? onTrigger : undefined} style={cellContainer}>
+        {typeof renderTrigger === 'function' ? renderTrigger(onTrigger) : null}
         <div ref={triggerContainerRef}>{children}</div>
         {contextMenuOpen && payload && (
           <Suspense fallback={<></>}>

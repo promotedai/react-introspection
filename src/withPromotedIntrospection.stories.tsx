@@ -42,3 +42,21 @@ Default.args = {
     insertionId: 'abc',
   },
 }
+
+export const Controlled = () => {
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <button onClick={() => setIsOpen(true)}>Open</button>
+      <WithPromotedIntrospection
+        introspectionOpen={isOpen}
+        introspectionEnabled
+        disableDefaultIntrospectionTrigger
+        item={{ insertionId: 'abc' }}
+        introspectionEndpoint="www.foo.com"
+        onIntrospectionClose={() => setIsOpen(false)}
+      />
+    </div>
+  )
+}

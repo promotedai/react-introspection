@@ -16,6 +16,11 @@ export interface CellPopupArgs {
 }
 
 const useStyles = makeStyles((theme) => ({
+  popupContainer: {
+    position: 'absolute',
+    left: '-425px',
+    top: '-41%',
+  },
   outerContainer: {
     color: 'black',
     width: '400px',
@@ -74,7 +79,6 @@ export const CellPopup = ({ triggerContainerRef, introspectionData, handleClose 
     if (!triggerContainerRef.current || !popupContainerRef.current) return
     const triggerRect = triggerContainerRef.current.getBoundingClientRect()
     const popupRect = popupContainerRef.current.getBoundingClientRect()
-
     popupContainerRef.current.style.position = 'absolute'
     popupContainerRef.current.style.left = `${-Math.min(popupRect.width + 25, triggerRect.x)}px`
     popupContainerRef.current.style.top = `${-(popupRect.height - triggerRect.height) / 2}px`
@@ -106,7 +110,7 @@ export const CellPopup = ({ triggerContainerRef, introspectionData, handleClose 
 
   return (
     <ThemeProvider theme={theme}>
-      <div ref={popupContainerRef}>
+      <div ref={popupContainerRef} className={classes.popupContainer}>
         <Box className={classes.outerContainer}>
           <Box boxShadow={4} className={classes.innerContainer}>
             <Box className={classes.callout} />
