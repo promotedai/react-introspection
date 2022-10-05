@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, makeStyles, Typography } from '@material-ui/core'
+import { Box, Button, makeStyles, Typography, Tooltip } from '@material-ui/core'
 import { Theme } from '@material-ui/core'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import { useState } from 'react'
@@ -70,28 +70,76 @@ export const StatsPanel = ({
   const classes = useStyles(theme)
 
   const ids = [
-    ['User ID', userId],
-    ['Log User ID', logUserId],
-    ['Request ID', requestId],
-    ['Insertion ID', insertionId],
+    {
+      label: 'User ID',
+      value: userId,
+    },
+    {
+      label: 'Log User ID',
+      value: logUserId,
+    },
+    {
+      label: 'Request ID',
+      value: requestId,
+    },
+    {
+      label: 'Insertion ID',
+      value: insertionId,
+    },
   ]
+
   const ranks = [
-    ['Promoted', promotedRank],
-    ['Retrieval', `${retrievalRank} (${formatting.difference((retrievalRank ?? 0) - (promotedRank ?? 0))})`],
+    {
+      label: 'Promoted',
+      value: promotedRank,
+    },
+    {
+      label: 'Retrieval',
+      value: `${retrievalRank} (${formatting.difference((retrievalRank ?? 0) - (promotedRank ?? 0))})`,
+    },
   ]
+
   const stats = [
-    ['p(Click)', pClick],
-    ['p(Purchase)', pPurchase],
-    ['30 Day Impr', queryRelevance],
-    ['CTR', queryRelevance],
-    ['Post-Click CVR', queryRelevance],
-    ['Personalization', personalization],
-    ['Price', queryRelevance],
+    {
+      label: 'p(Click)',
+      value: pClick,
+      tooltip: 'Probability of a click',
+    },
+    {
+      label: 'p(Purchase)',
+      value: pPurchase,
+      tooltip: 'Probability of a purchase',
+    },
+    {
+      label: '30 Day Impr',
+      value: queryRelevance,
+      tooltip: '30 Day Impressions',
+    },
+    {
+      label: 'CTR',
+      value: queryRelevance,
+      tooltip: 'Click Through Rate',
+    },
+    {
+      label: 'Post-Click CVR',
+      value: queryRelevance,
+      tooltip: 'Post-Click Conversion Rate',
+    },
+    {
+      label: 'Personalization',
+      value: personalization,
+      tooltip: 'Personalization',
+    },
+    {
+      label: 'Price',
+      value: queryRelevance,
+      tooltip: 'Price',
+    },
   ]
 
   const introspectionRows = (
     title: string,
-    content: (string | number | undefined)[][],
+    content: { label: string; value: string | number | undefined; tooltip?: string | undefined }[],
     labelColumns: any,
     contentColumns: any
   ) => (
@@ -102,10 +150,17 @@ export const StatsPanel = ({
       {content.map((item) => (
         <>
           <Box sx={{ ...statsStyles.itemLabel, gridColumn: labelColumns }}>
-            <Typography>{item[0]}:</Typography>
+            <Typography>
+              {item.tooltip && (
+                <Tooltip arrow title={item.tooltip}>
+                  <span>{item.label}</span>
+                </Tooltip>
+              )}
+            </Typography>
+            {!item.tooltip && <Typography>{item.label}</Typography>}
           </Box>
           <Box sx={{ ...statsStyles.itemContent, gridColumn: contentColumns }}>
-            <Typography>{item[1] ?? '-'}</Typography>
+            <Typography>{item.value ?? '-'}</Typography>
           </Box>
         </>
       ))}

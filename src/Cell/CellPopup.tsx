@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   outerContainer: {
     color: 'black',
+    maxWidth: '100vw',
     width: '400px',
     zIndex: 1001,
     maxHeight: '100vh',
@@ -33,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   callout: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
     backgroundColor: '#eee',
     transform: 'rotate(45deg) translateX(-50%)',
     height: '30px',
