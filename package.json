@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/promotedai/react-introspection"
+    "url": "https://github.com/promotedai/react-introspection.git"
   },
   "publishConfig": {
     "access": "public"
@@ -85,6 +85,7 @@
     "@typescript-eslint/eslint-plugin": "^4.12.0",
     "@typescript-eslint/parser": "^4.12.0",
     "babel-loader": "^8.2.5",
+    "chromatic": "^6.10.1",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsdoc": "^30.0.3",
