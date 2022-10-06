@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { PromotedIntrospectionCell } from './PromotedIntrospectionCell'
+import { PromotedIntrospectionCell, PromotedIntrospectionCellTrigger } from './PromotedIntrospectionCell'
 import { Card } from '@material-ui/core'
 
 export default {
@@ -10,22 +10,28 @@ export default {
   component: PromotedIntrospectionCell,
 } as ComponentMeta<typeof PromotedIntrospectionCell>
 
+const SearchItem = () => {
+  return (
+    <Card
+      style={{
+        height: 300,
+        width: 200,
+        textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        margin: 'auto',
+      }}
+    >
+      Some search result
+    </Card>
+  )
+}
+
 const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
     <PromotedIntrospectionCell {...args}>
-      <Card
-        style={{
-          height: 300,
-          width: 200,
-          textAlign: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
-          display: 'flex',
-          margin: 'auto',
-        }}
-      >
-        Some search result
-      </Card>
+      <SearchItem />
     </PromotedIntrospectionCell>
   </div>
 )
@@ -33,7 +39,6 @@ const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
 export const Default = Template.bind({})
 
 Default.args = {
-  introspectionEndpoint: 'www.foo.com',
   item: {
     insertionId: 'abc',
   },
@@ -68,19 +73,35 @@ export const Controlled = () => {
         introspectionEndpoint="www.foo.com"
         onClose={() => setIsOpen(false)}
       >
-        <Card
-          style={{
-            height: 300,
-            width: 200,
-            textAlign: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
-            display: 'flex',
-            margin: 'auto',
-          }}
-        >
-          Some search result
-        </Card>
+        <SearchItem />
+      </PromotedIntrospectionCell>
+    </div>
+  )
+}
+
+export const TriggerOverlay = () => {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <PromotedIntrospectionCell
+        item={{ insertionId: 'abc' }}
+        introspectionEndpoint="www.foo.com"
+        triggerType={PromotedIntrospectionCellTrigger.OverlayAlways}
+      >
+        <SearchItem />
+      </PromotedIntrospectionCell>
+    </div>
+  )
+}
+
+export const TriggerOverlayOnHover = () => {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <PromotedIntrospectionCell
+        item={{ insertionId: 'abc' }}
+        introspectionEndpoint="www.foo.com"
+        triggerType={PromotedIntrospectionCellTrigger.OverlayOnMouseEnter}
+      >
+        <SearchItem />
       </PromotedIntrospectionCell>
     </div>
   )
