@@ -1,4 +1,7 @@
-import { makeStyles } from '@material-ui/styles'
+/**
+ * We want to avoid importing anything from material-ui in this file so that we can lazy load it
+ * in the popup
+ */
 import React, { Suspense, useRef } from 'react'
 import { MouseEvent, ReactNode, useEffect, useState } from 'react'
 import { CellIntrospectionData } from './types'
@@ -7,8 +10,7 @@ const CellPopup = React.lazy(() => import('./CellPopup').then(({ CellPopup }) =>
 
 export enum PromotedIntrospectionCellTrigger {
   ContextMenu = 1,
-  OverlayAlways = 2,
-  OverlayOnMouseEnter = 3,
+  Overlay = 2,
 }
 
 export interface PromotedIntrospectionCellArgs {
@@ -22,54 +24,6 @@ export interface PromotedIntrospectionCellArgs {
   triggerType?: PromotedIntrospectionCellTrigger
 }
 
-const useStyles = makeStyles({
-  container: {
-    position: 'relative',
-    '& .trigger--overlay-on-mouse-enter': {
-      opacity: '0',
-      transition: 'opacity 0.2s ease-in-out',
-    },
-    '&:hover': {
-      '& .trigger--overlay-on-mouse-enter': {
-        opacity: '1',
-      },
-    },
-  },
-  'container--context-menu-open': {
-    background: 'white',
-    zIndex: 1000,
-  },
-  'background-container': {
-    background: 'black',
-    height: '100%',
-    left: '0',
-    opacity: '50%',
-    position: 'fixed',
-    top: '0',
-    width: '100%',
-    zIndex: 999,
-  },
-  trigger: {
-    padding: '5px',
-    border: 'none',
-    position: 'absolute',
-    height: '30px',
-    width: '30px',
-    top: '20px',
-    cursor: 'pointer',
-    borderRadius: '0 5px 5px 0',
-  },
-  trigger__contents: {
-    background: "no-repeat url('https://avatars.githubusercontent.com/t/3500892?s=280&v=4')",
-    backgroundSize: 'cover',
-    backgroundColor: '#eee',
-    height: '100%',
-    width: '100%',
-  },
-})
-
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-
 export const PromotedIntrospectionCell = ({
   item,
   introspectionEndpoint,
@@ -78,13 +32,12 @@ export const PromotedIntrospectionCell = ({
   disableDefaultTrigger,
   isOpen,
   onClose,
-  triggerType,
+  triggerType = PromotedIntrospectionCellTrigger.ContextMenu,
 }: PromotedIntrospectionCellArgs) => {
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [payload, setPayload] = useState<CellIntrospectionData | undefined>()
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
-  const classes = useStyles()
 
   // TODO:  Update this function to extract the metadata from the provided item.
   // This is likely where the integration with the API will happen
@@ -144,19 +97,34 @@ export const PromotedIntrospectionCell = ({
         onContextMenu={
           !disableDefaultTrigger && triggerType === PromotedIntrospectionCellTrigger.ContextMenu ? onTrigger : undefined
         }
-        className={`${classes.container} ${contextMenuOpen ? classes['container--context-menu-open'] : ''}`}
+        style={{
+          position: 'relative',
+          ...(contextMenuOpen ? { background: 'white', zIndex: 1000 } : {}),
+        }}
       >
-        {(triggerType === PromotedIntrospectionCellTrigger.OverlayAlways ||
-          triggerType === PromotedIntrospectionCellTrigger.OverlayOnMouseEnter) && (
+        {triggerType === PromotedIntrospectionCellTrigger.Overlay && (
           <button
-            className={`${classes.trigger} ${
-              triggerType === PromotedIntrospectionCellTrigger.OverlayOnMouseEnter && !isMobile
-                ? 'trigger--overlay-on-mouse-enter'
-                : ''
-            }`}
+            style={{
+              padding: '5px',
+              border: 'none',
+              position: 'absolute',
+              height: '30px',
+              width: '30px',
+              top: '20px',
+              cursor: 'pointer',
+              borderRadius: '0 5px 5px 0',
+            }}
             onClick={onTrigger}
           >
-            <div className={classes['trigger__contents']} />{' '}
+            <div
+              style={{
+                background: "no-repeat url('https://avatars.githubusercontent.com/t/3500892?s=280&v=4')",
+                backgroundSize: 'cover',
+                backgroundColor: '#eee',
+                height: '100%',
+                width: '100%',
+              }}
+            />{' '}
           </button>
         )}
         {typeof renderTrigger === 'function' ? renderTrigger(onTrigger) : null}
@@ -182,7 +150,21 @@ export const PromotedIntrospectionCell = ({
           </Suspense>
         )}
       </div>
-      {contextMenuOpen && <div onClick={onClickBackground} className={classes['background-container']} />}
+      {contextMenuOpen && (
+        <div
+          onClick={onClickBackground}
+          style={{
+            background: 'black',
+            height: '100%',
+            left: '0',
+            opacity: '50%',
+            position: 'fixed',
+            top: '0',
+            width: '100%',
+            zIndex: 999,
+          }}
+        />
+      )}
     </>
   )
 }

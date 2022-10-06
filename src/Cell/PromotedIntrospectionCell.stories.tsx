@@ -39,6 +39,7 @@ const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
 export const Default = Template.bind({})
 
 Default.args = {
+  introspectionEndpoint: 'www.foo.com',
   item: {
     insertionId: 'abc',
   },
@@ -85,21 +86,7 @@ export const TriggerOverlay = () => {
       <PromotedIntrospectionCell
         item={{ insertionId: 'abc' }}
         introspectionEndpoint="www.foo.com"
-        triggerType={PromotedIntrospectionCellTrigger.OverlayAlways}
-      >
-        <SearchItem />
-      </PromotedIntrospectionCell>
-    </div>
-  )
-}
-
-export const TriggerOverlayOnHover = () => {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <PromotedIntrospectionCell
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
-        triggerType={PromotedIntrospectionCellTrigger.OverlayOnMouseEnter}
+        triggerType={PromotedIntrospectionCellTrigger.Overlay}
       >
         <SearchItem />
       </PromotedIntrospectionCell>
