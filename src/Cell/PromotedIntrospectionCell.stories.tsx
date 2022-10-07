@@ -93,3 +93,17 @@ export const TriggerOverlay = () => {
     </div>
   )
 }
+
+export const TriggerOverlayOnHover = () => {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <PromotedIntrospectionCell
+        item={{ insertionId: 'abc' }}
+        introspectionEndpoint="www.foo.com"
+        triggerType={PromotedIntrospectionCellTrigger.OverlayOnHover}
+      >
+        <SearchItem />
+      </PromotedIntrospectionCell>
+    </div>
+  )
+}

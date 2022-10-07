@@ -11,6 +11,7 @@ const CellPopup = React.lazy(() => import('./CellPopup').then(({ CellPopup }) =>
 export enum PromotedIntrospectionCellTrigger {
   ContextMenu = 1,
   Overlay = 2,
+  OverlayOnHover = 3,
 }
 
 export interface PromotedIntrospectionCellArgs {
@@ -23,6 +24,8 @@ export interface PromotedIntrospectionCellArgs {
   onClose?: () => any
   triggerType?: PromotedIntrospectionCellTrigger
 }
+
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 
 export const PromotedIntrospectionCell = ({
   item,
@@ -91,20 +94,44 @@ export const PromotedIntrospectionCell = ({
     body.style.overflow = contextMenuOpen && introspectionEndpoint ? 'hidden' : 'initial'
   }, [contextMenuOpen])
 
+  const [showTriggerOverlay, setShowTriggerOverlay] = useState(
+    () =>
+      triggerType === PromotedIntrospectionCellTrigger.Overlay ||
+      (triggerType === PromotedIntrospectionCellTrigger.OverlayOnHover && isMobile)
+  )
+
+  // This could be done with a :hover pseudoselector, but we're restricted to inline CSS unless we import a
+  // CSS-in-JS library (which we want to avoid in this file), or use a separate CSS file that the client would have to import.
+  const onMouseEnter = () => {
+    if (triggerType === PromotedIntrospectionCellTrigger.OverlayOnHover && !isMobile) {
+      setShowTriggerOverlay(true)
+    }
+  }
+
+  const onMouseLeave = () => {
+    if (triggerType === PromotedIntrospectionCellTrigger.OverlayOnHover && !isMobile) {
+      setShowTriggerOverlay(false)
+    }
+  }
+
   return (
     <>
       <div
         onContextMenu={
           !disableDefaultTrigger && triggerType === PromotedIntrospectionCellTrigger.ContextMenu ? onTrigger : undefined
         }
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         style={{
           position: 'relative',
           ...(contextMenuOpen ? { background: 'white', zIndex: 1000 } : {}),
         }}
       >
-        {triggerType === PromotedIntrospectionCellTrigger.Overlay && (
+        {(triggerType === PromotedIntrospectionCellTrigger.Overlay ||
+          triggerType === PromotedIntrospectionCellTrigger.OverlayOnHover) && (
           <button
             style={{
+              display: showTriggerOverlay ? 'block' : 'none',
               padding: '5px',
               border: 'none',
               position: 'absolute',
