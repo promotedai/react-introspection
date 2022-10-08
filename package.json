@@ -1,6 +1,6 @@
 {
   "name": "@promotedai/react-introspection",
-  "main": "dist/react-introspection.esm.js",
+  "main": "dist/",
   "version": "1.0.0",
   "description": "Promoted Introspection integration for React web apps",
   "scripts": {

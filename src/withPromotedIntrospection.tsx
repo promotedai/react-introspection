@@ -7,7 +7,14 @@ export const withPromotedIntrospection =
     const WithPromotedIntrospection = (props: any) => {
       if (props.introspectionEnabled) {
         return (
-          <PromotedIntrospectionCell item={props.item} introspectionEndpoint={introspectionEndpoint}>
+          <PromotedIntrospectionCell
+            item={props.item}
+            introspectionEndpoint={introspectionEndpoint}
+            isOpen={props.introspectionOpen}
+            renderTrigger={props.renderIntrospectionTrigger}
+            onClose={props.onIntrospectionClose}
+            disableDefaultTrigger={props.disableDefaultIntrospectionTrigger}
+          >
             <WrappedComponent {...props} />
           </PromotedIntrospectionCell>
         )

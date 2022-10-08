@@ -15,14 +15,6 @@ export default [
       }),
       terser(),
     ],
-    output: [
-      {
-        name: pkg.name,
-        file: `dist/react-introspection.umd.js`,
-        format: 'umd',
-        sourcemap: true,
-      },
-      { file: `dist/react-introspection.esm.js`, format: 'es', sourcemap: true },
-    ],
+    output: [{ dir: 'dist', format: 'es', sourcemap: true }],
   },
 ]
