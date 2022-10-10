@@ -4,10 +4,13 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { PromotedIntrospectionCell, PromotedIntrospectionCellTrigger } from './PromotedIntrospectionCell'
 import { Card } from '@material-ui/core'
+import withMock from '@nathancahill/storybook-addon-mock'
+import { mockData } from './mocks'
 
 export default {
   title: 'PromotedIntrospectionCell',
   component: PromotedIntrospectionCell,
+  decorators: [withMock],
 } as ComponentMeta<typeof PromotedIntrospectionCell>
 
 const SearchItem = () => {
@@ -37,21 +40,21 @@ const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
 )
 
 export const Default = Template.bind({})
+Default.parameters = { mockData }
 
 Default.args = {
-  introspectionEndpoint: 'www.foo.com',
+  endpoint: 'www.foo.com',
+  apiKey: 'api-key',
   item: {
-    insertionId: 'abc',
+    contentId: 'content_id2',
+    logUserId: 'test-loguserid',
   },
 }
 
 export const CustomTrigger = Template.bind({})
-
+CustomTrigger.parameters = { mockData }
 CustomTrigger.args = {
   introspectionEndpoint: 'www.foo.com',
-  item: {
-    insertionId: 'abc',
-  },
   renderTrigger: (onTrigger: () => any) => {
     return (
       <button style={{ position: 'absolute', top: 5, left: 5 }} onClick={onTrigger}>
@@ -70,8 +73,9 @@ export const Controlled = () => {
       <PromotedIntrospectionCell
         isOpen={isOpen}
         disableDefaultTrigger
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
+        item={{ logUserId: 'test-loguserid', contentId: 'content-id2' }}
+        endpoint="www.foo.com"
+        apiKey="api-key"
         onClose={() => setIsOpen(false)}
       >
         <SearchItem />
@@ -79,13 +83,15 @@ export const Controlled = () => {
     </div>
   )
 }
+Controlled.parameters = { mockData }
 
 export const TriggerOverlay = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <PromotedIntrospectionCell
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
+        item={{ logUserId: 'test-loguserid', contentId: 'bcd' }}
+        endpoint="www.foo.com"
+        apiKey="api-key"
         triggerType={PromotedIntrospectionCellTrigger.Overlay}
       >
         <SearchItem />
@@ -93,13 +99,15 @@ export const TriggerOverlay = () => {
     </div>
   )
 }
+TriggerOverlay.parameters = { mockData }
 
 export const TriggerOverlayOnHover = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <PromotedIntrospectionCell
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
+        item={{ logUserId: 'test-loguserid', contentId: 'content_id1' }}
+        endpoint="www.foo.com"
+        apiKey="api-key"
         triggerType={PromotedIntrospectionCellTrigger.OverlayOnHover}
       >
         <SearchItem />
@@ -107,3 +115,4 @@ export const TriggerOverlayOnHover = () => {
     </div>
   )
 }
+TriggerOverlayOnHover.parameters = { mockData }

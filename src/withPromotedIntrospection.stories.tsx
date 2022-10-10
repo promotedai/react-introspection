@@ -4,9 +4,11 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { PromotedIntrospectionCell } from './Cell/PromotedIntrospectionCell'
 import { Card } from '@material-ui/core'
+import withMock from '@nathancahill/storybook-addon-mock'
 import { withPromotedIntrospection } from './withPromotedIntrospection'
+import { mockData } from './Cell/mocks'
 
-const BaseComponent = ({ item }: { item: { insertionId: string } }) => (
+const BaseComponent = ({ item }: { item: { logUserId: string; contentId: string } }) => (
   <Card
     style={{
       height: 300,
@@ -18,15 +20,19 @@ const BaseComponent = ({ item }: { item: { insertionId: string } }) => (
       margin: 'auto',
     }}
   >
-    Some search result with insertionId {item.insertionId}
+    Some search result with Log User Id {item.logUserId}
   </Card>
 )
 
-const WithPromotedIntrospection = withPromotedIntrospection('www.foo.com')(BaseComponent)
+const WithPromotedIntrospection = withPromotedIntrospection({
+  endpoint: 'www.foo.com',
+  apiKey: 'apikey',
+})(BaseComponent)
 
 export default {
   title: 'withPromotedIntrospectionCell',
   component: WithPromotedIntrospection,
+  decorators: [withMock],
 } as ComponentMeta<typeof WithPromotedIntrospection>
 
 const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
@@ -36,10 +42,15 @@ const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
 )
 
 export const Default = Template.bind({})
+Default.parameters = {
+  mockData,
+}
+
 Default.args = {
   introspectionEnabled: true,
   item: {
-    insertionId: 'abc',
+    contentId: 'content_id2',
+    logUserId: 'test-loguserid',
   },
 }
 
@@ -53,10 +64,12 @@ export const Controlled = () => {
         introspectionOpen={isOpen}
         introspectionEnabled
         disableDefaultIntrospectionTrigger
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
+        item={{ contentId: 'content_id2', logUserId: 'abc' }}
         onIntrospectionClose={() => setIsOpen(false)}
       />
     </div>
   )
+}
+Controlled.parameters = {
+  mockData,
 }

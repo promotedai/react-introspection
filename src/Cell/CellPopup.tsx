@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Box, Tab, Tabs, ThemeProvider } from '@material-ui/core'
+import { CircularProgress, Box, Tab, Tabs, ThemeProvider } from '@material-ui/core'
 import { createTheme } from '@material-ui/core'
 import { ModerationPanel } from './ModerationPanel'
 import { ModerationLogPanel } from './ModerationLogPanel'
@@ -8,14 +8,37 @@ import { StatsPanel } from './StatsPanel'
 import { CellIntrospectionData } from './types'
 import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
+import { REQUEST_ERRORS } from './PromotedIntrospectionCell'
+import { IntrospectionItem } from './PromotedIntrospectionCell'
+
+export interface CellIntrospectionId {
+  label: string
+  value?: string
+}
 
 export interface CellPopupArgs {
+  isLoading: boolean
   triggerContainerRef: React.RefObject<HTMLDivElement>
-  introspectionData: CellIntrospectionData
+  introspectionData?: CellIntrospectionData
+  introspectionIds: CellIntrospectionId[]
+  item: IntrospectionItem
+  error?: string | void
   handleClose: () => any
 }
 
 const useStyles = makeStyles((theme) => ({
+  loading: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '300px',
+  },
+  error: {
+    padding: theme.spacing(2),
+    paddingBottom: theme.spacing(3),
+    color: theme.palette.error.main,
+    height: '300px',
+  },
   popupContainer: {
     position: 'absolute',
     left: '-425px',
@@ -55,7 +78,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const CellPopup = ({ triggerContainerRef, introspectionData, handleClose }: CellPopupArgs) => {
+export const CellPopup = ({
+  error,
+  triggerContainerRef,
+  introspectionData,
+  introspectionIds,
+  item,
+  handleClose,
+}: CellPopupArgs) => {
   const theme = createTheme({
     typography: {
       body1: {
@@ -113,35 +143,55 @@ export const CellPopup = ({ triggerContainerRef, introspectionData, handleClose 
     }
   }, [])
 
+  const errorMap = {
+    [REQUEST_ERRORS.DATA_NOT_FOUND]: `Could not find introspection data for Log User ID ${item.logUserId} and Content ID ${item.contentId}`,
+    [REQUEST_ERRORS.INVALID_RESPONSE]: `Response from server invalid for Log User ID ${item.logUserId}`,
+    [REQUEST_ERRORS.FETCH_FAILED]: `Fetch failed for Log User ID ${item.logUserId}`,
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <div ref={popupContainerRef} className={classes.popupContainer}>
         <Box className={classes.outerContainer}>
           <Box boxShadow={4} className={classes.innerContainer}>
             <Box className={classes.callout} />
-            <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
-              <Tab label="Stats" />
-              <Tab label="Properties" />
-              <Tab label="Moderation" />
-              <Tab label="Moderation Log" />
-            </Tabs>
-            {promotedLogoVisible && (
-              <img className={classes.promotedLogo} src="https://avatars.githubusercontent.com/t/3500892?s=280&v=4" />
+            {!introspectionData && !error && (
+              <div className={classes.loading}>
+                <CircularProgress />
+              </div>
             )}
+            {error && <div className={classes.error}>{errorMap[error]}</div>}
+            {!error && introspectionData && (
+              <>
+                <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
+                  <Tab label="Stats" />
+                  <Tab label="Properties" />
+                  <Tab label="Moderation" />
+                  <Tab label="Moderation Log" />
+                </Tabs>
+                {promotedLogoVisible && (
+                  <img
+                    className={classes.promotedLogo}
+                    src="https://avatars.githubusercontent.com/t/3500892?s=280&v=4"
+                  />
+                )}
 
-            {tabIndex == 0 && (
-              <StatsPanel
-                introspectionData={introspectionData}
-                handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
-                handleClose={handleClose}
-                theme={theme}
-              />
+                {tabIndex == 0 && (
+                  <StatsPanel
+                    introspectionIds={introspectionIds}
+                    introspectionData={introspectionData}
+                    handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
+                    handleClose={handleClose}
+                    theme={theme}
+                  />
+                )}
+
+                {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
+
+                {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
+                {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
+              </>
             )}
-
-            {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
-
-            {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
-            {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
           </Box>
         </Box>
       </div>

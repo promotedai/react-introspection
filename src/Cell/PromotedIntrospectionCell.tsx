@@ -14,10 +14,22 @@ export enum PromotedIntrospectionCellTrigger {
   OverlayOnHover = 3,
 }
 
+export interface IntrospectionItem {
+  logUserId: string
+  contentId: string
+}
+
+interface ByLogUserIdResult {
+  insertion_data: {
+    [contentId: string]: CellIntrospectionData
+  }
+}
+
 export interface PromotedIntrospectionCellArgs {
-  introspectionEndpoint: string
+  endpoint: string
+  apiKey: string
   children: ReactNode
-  item: { insertionId: string }
+  item: IntrospectionItem
   isOpen?: boolean
   renderTrigger?: (onTrigger: (e: Event) => any) => ReactNode
   disableDefaultTrigger?: boolean
@@ -25,11 +37,18 @@ export interface PromotedIntrospectionCellArgs {
   triggerType?: PromotedIntrospectionCellTrigger
 }
 
+export enum REQUEST_ERRORS {
+  DATA_NOT_FOUND = 'DATA_NOT_FOUND',
+  INVALID_RESPONSE = 'INVALID_RESPONSE',
+  FETCH_FAILED = 'FETCH_FAILED',
+}
+
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 
 export const PromotedIntrospectionCell = ({
   item,
-  introspectionEndpoint,
+  endpoint,
+  apiKey,
   children,
   renderTrigger,
   disableDefaultTrigger,
@@ -38,41 +57,58 @@ export const PromotedIntrospectionCell = ({
   triggerType = PromotedIntrospectionCellTrigger.ContextMenu,
 }: PromotedIntrospectionCellArgs) => {
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
-  const [payload, setPayload] = useState<CellIntrospectionData | undefined>()
+  const [error, setError] = useState<string | void>()
+  const [isLoading, setIsLoading] = useState(false)
+  const [introspectionDataPayload, setIntrospectionDataPayload] = useState<CellIntrospectionData | undefined>()
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
 
-  // TODO:  Update this function to extract the metadata from the provided item.
-  // This is likely where the integration with the API will happen
   const getIntrospectionPayload = async () => {
-    // MOCK
-    return {
-      userId: 'userId',
-      logUserId: 'logUserId',
-      requestId: 'requestId',
-      insertionId: 'insertionId',
-      promotedRank: 2,
-      retrievalRank: 3,
-      pClick: 0.5,
-      pPurchase: 0.6,
-      queryRelevance: 5,
-      personalization: 5,
+    let result
+    setIsLoading(true)
+    try {
+      result = await fetch(`${endpoint}/dev/v1/introspectiondata/byloguserid/${item.logUserId}`, {
+        headers: {
+          'x-api-key': apiKey,
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (e) {
+      setIsLoading(false)
+      throw REQUEST_ERRORS.FETCH_FAILED
     }
+
+    setIsLoading(false)
+
+    let jsonResult
+    try {
+      const text = await result.text()
+      jsonResult = JSON.parse(text.split('\n')[0]) as ByLogUserIdResult[]
+    } catch (e) {
+      throw REQUEST_ERRORS.INVALID_RESPONSE
+    }
+
+    const match = jsonResult?.find((r) => r.insertion_data[item.contentId])?.insertion_data?.[item.contentId]
+
+    if (!match) throw REQUEST_ERRORS.DATA_NOT_FOUND
+
+    return match
   }
 
   useEffect(() => {
     setContextMenuOpen(Boolean(isOpen))
   }, [isOpen])
 
-  useEffect(() => {
-    if (contextMenuOpen && introspectionEndpoint && item.insertionId) {
-      getIntrospectionPayload().then(setPayload)
-    }
-  }, [item, introspectionEndpoint, contextMenuOpen])
-
-  const onTrigger = (e: Event | MouseEvent) => {
-    if (!contextMenuOpen && introspectionEndpoint) {
+  const onTrigger = async (e: Event | MouseEvent) => {
+    setError()
+    if (!contextMenuOpen && endpoint && item.logUserId && item.contentId) {
       e.preventDefault()
+      try {
+        const payload = await getIntrospectionPayload()
+        setIntrospectionDataPayload(payload)
+      } catch (e) {
+        setError(e)
+      }
       setContextMenuOpen(true)
     }
   }
@@ -91,7 +127,7 @@ export const PromotedIntrospectionCell = ({
     const body = document.querySelector('body')
     if (!body) return
 
-    body.style.overflow = contextMenuOpen && introspectionEndpoint ? 'hidden' : 'initial'
+    body.style.overflow = contextMenuOpen && endpoint ? 'hidden' : 'initial'
   }, [contextMenuOpen])
 
   const [showTriggerOverlay, setShowTriggerOverlay] = useState(
@@ -156,22 +192,20 @@ export const PromotedIntrospectionCell = ({
         )}
         {typeof renderTrigger === 'function' ? renderTrigger(onTrigger) : null}
         <div ref={triggerContainerRef}>{children}</div>
-        {contextMenuOpen && payload && (
+        {contextMenuOpen && (
           <Suspense fallback={<></>}>
             <CellPopup
+              isLoading={isLoading}
+              error={error}
               triggerContainerRef={triggerContainerRef}
-              introspectionData={{
-                userId: payload.userId,
-                logUserId: payload.logUserId,
-                requestId: payload.requestId,
-                insertionId: payload.insertionId,
-                promotedRank: payload.promotedRank,
-                retrievalRank: payload.retrievalRank,
-                pClick: payload.pClick,
-                pPurchase: payload.pPurchase,
-                queryRelevance: payload.queryRelevance,
-                personalization: payload.personalization,
-              }}
+              item={item}
+              introspectionIds={[
+                {
+                  label: 'Log User ID',
+                  value: item.logUserId,
+                },
+              ]}
+              introspectionData={introspectionDataPayload}
               handleClose={handleClose}
             />
           </Suspense>
