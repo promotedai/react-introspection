@@ -27,7 +27,7 @@ interface ByLogUserIdResult {
 
 export interface PromotedIntrospectionCellArgs {
   endpoint: string
-  apiKey: string
+  apiKey?: string
   children: ReactNode
   item: IntrospectionItem
   isOpen?: boolean
@@ -67,11 +67,14 @@ export const PromotedIntrospectionCell = ({
     let result
     setIsLoading(true)
     try {
+      const headers = {
+        'Content-Type': 'application/json',
+      }
+      if (apiKey) {
+        headers['x-api-key'] = apiKey
+      }
       result = await fetch(`${endpoint}/dev/v1/introspectiondata/byloguserid/${item.logUserId}`, {
-        headers: {
-          'x-api-key': apiKey,
-          'Content-Type': 'application/json',
-        },
+        headers,
       })
     } catch (e) {
       setIsLoading(false)

@@ -3,7 +3,7 @@ import { PromotedIntrospectionCell } from './Cell/PromotedIntrospectionCell'
 
 export interface WithPromotedIntrospectionProps {
   endpoint: string
-  apiKey: string
+  apiKey?: string
 }
 
 export const withPromotedIntrospection =
