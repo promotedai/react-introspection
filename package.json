@@ -1,7 +1,7 @@
 {
   "name": "@promotedai/react-introspection",
   "main": "dist/",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Promoted Introspection integration for React web apps",
   "scripts": {
     "prettier": "prettier '**/*.{js,ts}' --ignore-path ./.prettierignore",
