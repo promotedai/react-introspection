@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/promotedai/react-introspection/compare/v1.0.1...v1.0.2) (2022-10-13)
+
+
+### Bug Fixes
+
+* bump the version ([fe829a7](https://github.com/promotedai/react-introspection/commit/fe829a7b02dcf328c9f83e3102f9d2506ee35924))
+
 ## [1.0.1](https://github.com/promotedai/react-introspection/compare/v1.0.0...v1.0.1) (2022-10-13)
 
 
