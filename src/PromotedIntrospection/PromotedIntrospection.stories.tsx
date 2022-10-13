@@ -54,7 +54,12 @@ Default.args = {
 export const CustomTrigger = Template.bind({})
 CustomTrigger.parameters = { mockData }
 CustomTrigger.args = {
-  introspectionEndpoint: 'www.foo.com',
+  endpoint: 'www.foo.com',
+  apiKey: 'api-key',
+  item: {
+    contentId: 'content_id2',
+    logUserId: 'test-loguserid',
+  },
   renderTrigger: (onTrigger: () => any) => {
     return (
       <button style={{ position: 'absolute', top: 5, left: 5 }} onClick={onTrigger}>
@@ -73,7 +78,7 @@ export const Controlled = () => {
       <PromotedIntrospection
         isOpen={isOpen}
         disableDefaultTrigger
-        item={{ logUserId: 'test-loguserid', contentId: 'content-id2' }}
+        item={{ logUserId: 'test-loguserid', contentId: 'content_id2' }}
         endpoint="www.foo.com"
         apiKey="api-key"
         onClose={() => setIsOpen(false)}
@@ -89,7 +94,7 @@ export const TriggerOverlay = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <PromotedIntrospection
-        item={{ logUserId: 'test-loguserid', contentId: 'bcd' }}
+        item={{ logUserId: 'test-loguserid', contentId: 'content_id2' }}
         endpoint="www.foo.com"
         apiKey="api-key"
         triggerType={PromotedIntrospectionTrigger.Overlay}

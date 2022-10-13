@@ -63,13 +63,16 @@ export const Controlled = () => {
       <WithPromotedIntrospection
         introspectionOpen={isOpen}
         introspectionEnabled
+        endpoint="www.foo.com"
+        apiKey="apikey"
         disableDefaultIntrospectionTrigger
-        item={{ contentId: 'content_id2', logUserId: 'abc' }}
+        item={{ contentId: 'content_id2', logUserId: 'test-loguserid' }}
         onIntrospectionClose={() => setIsOpen(false)}
       />
     </div>
   )
 }
+
 Controlled.parameters = {
   mockData,
 }

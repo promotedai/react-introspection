@@ -73,9 +73,14 @@ export const PromotedIntrospection = ({
       if (apiKey) {
         headers['x-api-key'] = apiKey
       }
-      result = await fetch(`${endpoint.replace(/\/+$/, '')}/introspectiondata/byloguserid/${item.logUserId}`, {
-        headers,
-      })
+      result = await fetch(
+        `${endpoint[endpoint.length - 1] === '/' ? endpoint.slice(0, -1) : endpoint}/introspectiondata/byloguserid/${
+          item.logUserId
+        }`,
+        {
+          headers,
+        }
+      )
     } catch (e) {
       console.error(e)
       setIsLoading(false)
@@ -91,7 +96,6 @@ export const PromotedIntrospection = ({
       console.error(e)
       throw REQUEST_ERRORS.INVALID_RESPONSE
     }
-
     const match = jsonResult?.find((r) => r.insertion_data[item.contentId])?.insertion_data?.[item.contentId]
 
     if (!match) throw REQUEST_ERRORS.DATA_NOT_FOUND
@@ -101,12 +105,15 @@ export const PromotedIntrospection = ({
 
   useEffect(() => {
     setContextMenuOpen(Boolean(isOpen))
+    if (isOpen) {
+      onTrigger()
+    }
   }, [isOpen])
 
-  const onTrigger = async (e: Event | MouseEvent) => {
+  const onTrigger = async (e?: Event | MouseEvent) => {
     setError()
     if (!contextMenuOpen && endpoint && item.logUserId && item.contentId) {
-      e.preventDefault()
+      e?.preventDefault()
       try {
         const payload = await getIntrospectionPayload()
         setIntrospectionDataPayload(payload)
