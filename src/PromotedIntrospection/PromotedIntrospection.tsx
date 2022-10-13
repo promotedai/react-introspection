@@ -4,11 +4,11 @@
  */
 import React, { Suspense, useRef } from 'react'
 import { MouseEvent, ReactNode, useEffect, useState } from 'react'
-import { CellIntrospectionData } from './types'
+import { IntrospectionData } from './types'
 
-const CellPopup = React.lazy(() => import('./CellPopup').then(({ CellPopup }) => ({ default: CellPopup })))
+const Popup = React.lazy(() => import('./Popup').then(({ Popup }) => ({ default: Popup })))
 
-export enum PromotedIntrospectionCellTrigger {
+export enum PromotedIntrospectionTrigger {
   ContextMenu = 1,
   Overlay = 2,
   OverlayOnHover = 3,
@@ -21,11 +21,11 @@ export interface IntrospectionItem {
 
 interface ByLogUserIdResult {
   insertion_data: {
-    [contentId: string]: CellIntrospectionData
+    [contentId: string]: IntrospectionData
   }
 }
 
-export interface PromotedIntrospectionCellArgs {
+export interface PromotedIntrospectionArgs {
   endpoint: string
   apiKey?: string
   children: ReactNode
@@ -34,7 +34,7 @@ export interface PromotedIntrospectionCellArgs {
   renderTrigger?: (onTrigger: (e: Event) => any) => ReactNode
   disableDefaultTrigger?: boolean
   onClose?: () => any
-  triggerType?: PromotedIntrospectionCellTrigger
+  triggerType?: PromotedIntrospectionTrigger
 }
 
 export enum REQUEST_ERRORS {
@@ -45,7 +45,7 @@ export enum REQUEST_ERRORS {
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 
-export const PromotedIntrospectionCell = ({
+export const PromotedIntrospection = ({
   item,
   endpoint,
   apiKey,
@@ -54,12 +54,12 @@ export const PromotedIntrospectionCell = ({
   disableDefaultTrigger,
   isOpen,
   onClose,
-  triggerType = PromotedIntrospectionCellTrigger.ContextMenu,
-}: PromotedIntrospectionCellArgs) => {
+  triggerType = PromotedIntrospectionTrigger.ContextMenu,
+}: PromotedIntrospectionArgs) => {
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [error, setError] = useState<string | void>()
   const [isLoading, setIsLoading] = useState(false)
-  const [introspectionDataPayload, setIntrospectionDataPayload] = useState<CellIntrospectionData | undefined>()
+  const [introspectionDataPayload, setIntrospectionDataPayload] = useState<IntrospectionData | undefined>()
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
 
@@ -73,10 +73,11 @@ export const PromotedIntrospectionCell = ({
       if (apiKey) {
         headers['x-api-key'] = apiKey
       }
-      result = await fetch(`${endpoint}/dev/v1/introspectiondata/byloguserid/${item.logUserId}`, {
+      result = await fetch(`${endpoint.replace(/\/+$/, '')}/introspectiondata/byloguserid/${item.logUserId}`, {
         headers,
       })
     } catch (e) {
+      console.error(e)
       setIsLoading(false)
       throw REQUEST_ERRORS.FETCH_FAILED
     }
@@ -85,9 +86,9 @@ export const PromotedIntrospectionCell = ({
 
     let jsonResult
     try {
-      const text = await result.text()
-      jsonResult = JSON.parse(text.split('\n')[0]) as ByLogUserIdResult[]
+      jsonResult = JSON.parse(await result.json()) as ByLogUserIdResult[]
     } catch (e) {
+      console.error(e)
       throw REQUEST_ERRORS.INVALID_RESPONSE
     }
 
@@ -135,20 +136,20 @@ export const PromotedIntrospectionCell = ({
 
   const [showTriggerOverlay, setShowTriggerOverlay] = useState(
     () =>
-      triggerType === PromotedIntrospectionCellTrigger.Overlay ||
-      (triggerType === PromotedIntrospectionCellTrigger.OverlayOnHover && isMobile)
+      triggerType === PromotedIntrospectionTrigger.Overlay ||
+      (triggerType === PromotedIntrospectionTrigger.OverlayOnHover && isMobile)
   )
 
   // This could be done with a :hover pseudoselector, but we're restricted to inline CSS unless we import a
   // CSS-in-JS library (which we want to avoid in this file), or use a separate CSS file that the client would have to import.
   const onMouseEnter = () => {
-    if (triggerType === PromotedIntrospectionCellTrigger.OverlayOnHover && !isMobile) {
+    if (triggerType === PromotedIntrospectionTrigger.OverlayOnHover && !isMobile) {
       setShowTriggerOverlay(true)
     }
   }
 
   const onMouseLeave = () => {
-    if (triggerType === PromotedIntrospectionCellTrigger.OverlayOnHover && !isMobile) {
+    if (triggerType === PromotedIntrospectionTrigger.OverlayOnHover && !isMobile) {
       setShowTriggerOverlay(false)
     }
   }
@@ -157,7 +158,7 @@ export const PromotedIntrospectionCell = ({
     <>
       <div
         onContextMenu={
-          !disableDefaultTrigger && triggerType === PromotedIntrospectionCellTrigger.ContextMenu ? onTrigger : undefined
+          !disableDefaultTrigger && triggerType === PromotedIntrospectionTrigger.ContextMenu ? onTrigger : undefined
         }
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -166,8 +167,8 @@ export const PromotedIntrospectionCell = ({
           ...(contextMenuOpen ? { background: 'white', zIndex: 1000 } : {}),
         }}
       >
-        {(triggerType === PromotedIntrospectionCellTrigger.Overlay ||
-          triggerType === PromotedIntrospectionCellTrigger.OverlayOnHover) && (
+        {(triggerType === PromotedIntrospectionTrigger.Overlay ||
+          triggerType === PromotedIntrospectionTrigger.OverlayOnHover) && (
           <button
             style={{
               display: showTriggerOverlay ? 'block' : 'none',
@@ -197,7 +198,7 @@ export const PromotedIntrospectionCell = ({
         <div ref={triggerContainerRef}>{children}</div>
         {contextMenuOpen && (
           <Suspense fallback={<></>}>
-            <CellPopup
+            <Popup
               isLoading={isLoading}
               error={error}
               triggerContainerRef={triggerContainerRef}

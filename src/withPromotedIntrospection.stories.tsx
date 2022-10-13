@@ -2,11 +2,11 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { PromotedIntrospectionCell } from './Cell/PromotedIntrospectionCell'
+import { PromotedIntrospection } from './PromotedIntrospection/PromotedIntrospection'
 import { Card } from '@material-ui/core'
 import withMock from '@nathancahill/storybook-addon-mock'
 import { withPromotedIntrospection } from './withPromotedIntrospection'
-import { mockData } from './Cell/mocks'
+import { mockData } from './PromotedIntrospection/mocks'
 
 const BaseComponent = ({ item }: { item: { logUserId: string; contentId: string } }) => (
   <Card
@@ -30,12 +30,12 @@ const WithPromotedIntrospection = withPromotedIntrospection({
 })(BaseComponent)
 
 export default {
-  title: 'withPromotedIntrospectionCell',
+  title: 'withPromotedIntrospection',
   component: WithPromotedIntrospection,
   decorators: [withMock],
 } as ComponentMeta<typeof WithPromotedIntrospection>
 
-const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
+const Template: ComponentStory<typeof PromotedIntrospection> = (args) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
     <WithPromotedIntrospection {...args} />
   </div>

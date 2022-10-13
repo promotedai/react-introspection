@@ -5,12 +5,12 @@ import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import { useState } from 'react'
 import { Checkmark } from './Checkmark'
 import { styles } from './styles'
-import { CellIntrospectionData } from './types'
-import { CellIntrospectionId } from './CellPopup'
+import { IntrospectionData } from './types'
+import { IntrospectionIds } from './Popup'
 import { ranks, statistics } from '../constants'
 export interface StatsPanelArgs {
-  introspectionIds: CellIntrospectionId[]
-  introspectionData: CellIntrospectionData
+  introspectionIds: IntrospectionIds[]
+  introspectionData: IntrospectionData
   handleCopyButtonVisibilityChange: (visible: boolean) => any
   handleClose: () => any
   theme: Theme
@@ -69,7 +69,7 @@ export const StatsPanel = ({
     content: StatsPanelRow[],
     labelColumns: any,
     contentColumns: any,
-    introspectionData: CellIntrospectionData
+    introspectionData: IntrospectionData
   ) => (
     <>
       <Box className={classes.header}>

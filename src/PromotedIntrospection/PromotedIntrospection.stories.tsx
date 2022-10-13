@@ -2,16 +2,16 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { PromotedIntrospectionCell, PromotedIntrospectionCellTrigger } from './PromotedIntrospectionCell'
+import { PromotedIntrospection, PromotedIntrospectionTrigger } from './PromotedIntrospection'
 import { Card } from '@material-ui/core'
 import withMock from '@nathancahill/storybook-addon-mock'
 import { mockData } from './mocks'
 
 export default {
-  title: 'PromotedIntrospectionCell',
-  component: PromotedIntrospectionCell,
+  title: 'PromotedIntrospection',
+  component: PromotedIntrospection,
   decorators: [withMock],
-} as ComponentMeta<typeof PromotedIntrospectionCell>
+} as ComponentMeta<typeof PromotedIntrospection>
 
 const SearchItem = () => {
   return (
@@ -31,11 +31,11 @@ const SearchItem = () => {
   )
 }
 
-const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
+const Template: ComponentStory<typeof PromotedIntrospection> = (args) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    <PromotedIntrospectionCell {...args}>
+    <PromotedIntrospection {...args}>
       <SearchItem />
-    </PromotedIntrospectionCell>
+    </PromotedIntrospection>
   </div>
 )
 
@@ -70,7 +70,7 @@ export const Controlled = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <button onClick={() => setIsOpen(true)}>Open</button>
-      <PromotedIntrospectionCell
+      <PromotedIntrospection
         isOpen={isOpen}
         disableDefaultTrigger
         item={{ logUserId: 'test-loguserid', contentId: 'content-id2' }}
@@ -79,7 +79,7 @@ export const Controlled = () => {
         onClose={() => setIsOpen(false)}
       >
         <SearchItem />
-      </PromotedIntrospectionCell>
+      </PromotedIntrospection>
     </div>
   )
 }
@@ -88,14 +88,14 @@ Controlled.parameters = { mockData }
 export const TriggerOverlay = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <PromotedIntrospectionCell
+      <PromotedIntrospection
         item={{ logUserId: 'test-loguserid', contentId: 'bcd' }}
         endpoint="www.foo.com"
         apiKey="api-key"
-        triggerType={PromotedIntrospectionCellTrigger.Overlay}
+        triggerType={PromotedIntrospectionTrigger.Overlay}
       >
         <SearchItem />
-      </PromotedIntrospectionCell>
+      </PromotedIntrospection>
     </div>
   )
 }
@@ -104,14 +104,14 @@ TriggerOverlay.parameters = { mockData }
 export const TriggerOverlayOnHover = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <PromotedIntrospectionCell
+      <PromotedIntrospection
         item={{ logUserId: 'test-loguserid', contentId: 'content_id1' }}
         endpoint="www.foo.com"
         apiKey="api-key"
-        triggerType={PromotedIntrospectionCellTrigger.OverlayOnHover}
+        triggerType={PromotedIntrospectionTrigger.OverlayOnHover}
       >
         <SearchItem />
-      </PromotedIntrospectionCell>
+      </PromotedIntrospection>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react'
-import { PromotedIntrospectionCell } from './Cell/PromotedIntrospectionCell'
+import { PromotedIntrospection } from './PromotedIntrospection/PromotedIntrospection'
 
 export interface WithPromotedIntrospectionProps {
   endpoint: string
@@ -12,7 +12,7 @@ export const withPromotedIntrospection =
     const WithPromotedIntrospection = (props: any) => {
       if (props.introspectionEnabled) {
         return (
-          <PromotedIntrospectionCell
+          <PromotedIntrospection
             item={props.item}
             endpoint={endpoint}
             apiKey={apiKey}
@@ -22,7 +22,7 @@ export const withPromotedIntrospection =
             disableDefaultTrigger={props.disableDefaultIntrospectionTrigger}
           >
             <WrappedComponent {...props} />
-          </PromotedIntrospectionCell>
+          </PromotedIntrospection>
         )
       }
 

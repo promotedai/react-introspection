@@ -1,7 +1,7 @@
 export {
-  PromotedIntrospectionCell,
-  PromotedIntrospectionCellArgs,
-  PromotedIntrospectionCellTrigger,
-} from './Cell/PromotedIntrospectionCell'
+  PromotedIntrospection,
+  PromotedIntrospectionArgs,
+  PromotedIntrospectionTrigger,
+} from './PromotedIntrospection/PromotedIntrospection'
 
 export { withPromotedIntrospection } from './withPromotedIntrospection'

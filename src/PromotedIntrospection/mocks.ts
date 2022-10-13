@@ -1,6 +1,6 @@
 export const mockData = [
   {
-    url: 'www.foo.com/dev/v1/introspectiondata/byloguserid/test-loguserid',
+    url: 'www.foo.com/introspectiondata/byloguserid/test-loguserid',
     method: 'GET',
     status: 200,
     response: JSON.stringify([

@@ -5,22 +5,22 @@ import { ModerationPanel } from './ModerationPanel'
 import { ModerationLogPanel } from './ModerationLogPanel'
 import { PropertiesPanel } from './PropertiesPanel'
 import { StatsPanel } from './StatsPanel'
-import { CellIntrospectionData } from './types'
+import { IntrospectionData } from './types'
 import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
-import { REQUEST_ERRORS } from './PromotedIntrospectionCell'
-import { IntrospectionItem } from './PromotedIntrospectionCell'
+import { REQUEST_ERRORS } from './PromotedIntrospection'
+import { IntrospectionItem } from './PromotedIntrospection'
 
-export interface CellIntrospectionId {
+export interface IntrospectionIds {
   label: string
   value?: string
 }
 
-export interface CellPopupArgs {
+export interface PopupArgs {
   isLoading: boolean
   triggerContainerRef: React.RefObject<HTMLDivElement>
-  introspectionData?: CellIntrospectionData
-  introspectionIds: CellIntrospectionId[]
+  introspectionData?: IntrospectionData
+  introspectionIds: IntrospectionIds[]
   item: IntrospectionItem
   error?: string | void
   handleClose: () => any
@@ -78,14 +78,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const CellPopup = ({
+export const Popup = ({
   error,
   triggerContainerRef,
   introspectionData,
   introspectionIds,
   item,
   handleClose,
-}: CellPopupArgs) => {
+}: PopupArgs) => {
   const theme = createTheme({
     typography: {
       body1: {
@@ -144,7 +144,7 @@ export const CellPopup = ({
   }, [])
 
   const errorMap = {
-    [REQUEST_ERRORS.DATA_NOT_FOUND]: `Could not find introspection data for Log User ID ${item.logUserId} and Content ID ${item.contentId}`,
+    [REQUEST_ERRORS.DATA_NOT_FOUND]: `Could not find introspection data for Log User ID ${item.logUserId} and Content ID ${item.contentId}.  This is likely because the user is not flagged as an internal user.`,
     [REQUEST_ERRORS.INVALID_RESPONSE]: `Response from server invalid for Log User ID ${item.logUserId}`,
     [REQUEST_ERRORS.FETCH_FAILED]: `Fetch failed for Log User ID ${item.logUserId}`,
   }
