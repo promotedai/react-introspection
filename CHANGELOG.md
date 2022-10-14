@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/promotedai/react-introspection/compare/v1.0.2...v1.1.0) (2022-10-14)
+
+
+### Features
+
+* add chromatic and chromatic github action ([02b9b19](https://github.com/promotedai/react-introspection/commit/02b9b19d4088bc03d1c99d88895599df4d21224e))
+
 ## [1.0.2](https://github.com/promotedai/react-introspection/compare/v1.0.1...v1.0.2) (2022-10-13)
 
 
