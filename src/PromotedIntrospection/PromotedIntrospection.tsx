@@ -89,14 +89,15 @@ export const PromotedIntrospection = ({
 
     setIsLoading(false)
 
-    let jsonResult
+    let data: ByLogUserIdResult[]
     try {
-      jsonResult = JSON.parse(await result.json()) as ByLogUserIdResult[]
+      data = await result.json()
     } catch (e) {
       console.error(e)
       throw REQUEST_ERRORS.INVALID_RESPONSE
     }
-    const match = jsonResult?.find((r) => r.insertion_data[item.contentId])?.insertion_data?.[item.contentId]
+
+    const match = data?.find((r) => r.insertion_data[item.contentId])?.insertion_data?.[item.contentId]
 
     if (!match) throw REQUEST_ERRORS.DATA_NOT_FOUND
 

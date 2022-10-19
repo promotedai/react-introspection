@@ -18,7 +18,7 @@ export interface StatsPanelArgs {
 
 export interface StatsPanelRow {
   label: string
-  value?: ((data: any) => string | number) | string | number
+  value?: any | ((data: IntrospectionData) => any)
   tooltip?: string
 }
 
@@ -75,25 +75,26 @@ export const StatsPanel = ({
       <Box className={classes.header}>
         <Typography>{title}</Typography>
       </Box>
-      {content?.map((item) => (
-        <React.Fragment key={item.label}>
-          <Box sx={{ ...statsStyles.itemLabel, gridColumn: labelColumns }}>
-            <Typography>
-              {item.tooltip && (
-                <Tooltip arrow title={item.tooltip}>
-                  <span>{item.label}</span>
-                </Tooltip>
-              )}
-            </Typography>
-            {!item.tooltip && <Typography>{item.label}</Typography>}
-          </Box>
-          <Box sx={{ ...statsStyles.itemContent, gridColumn: contentColumns }}>
-            <Typography>
-              {(typeof item.value === 'function' ? item.value(introspectionData) : item.value) ?? '-'}
-            </Typography>
-          </Box>
-        </React.Fragment>
-      ))}
+      {content?.map((item) => {
+        const value = typeof item.value === 'function' ? item.value(introspectionData) : item.value
+        return (
+          <React.Fragment key={item.label}>
+            <Box sx={{ ...statsStyles.itemLabel, gridColumn: labelColumns }}>
+              <Typography>
+                {item.tooltip && (
+                  <Tooltip arrow title={item.tooltip}>
+                    <span>{item.label}</span>
+                  </Tooltip>
+                )}
+              </Typography>
+              {!item.tooltip && <Typography>{item.label}</Typography>}
+            </Box>
+            <Box sx={{ ...statsStyles.itemContent, gridColumn: contentColumns }}>
+              <Typography>{value || '-'}</Typography>
+            </Box>
+          </React.Fragment>
+        )
+      })}
     </>
   )
 

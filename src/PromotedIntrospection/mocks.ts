@@ -3,7 +3,7 @@ export const mockData = [
     url: 'www.foo.com/introspectiondata/byloguserid/test-loguserid',
     method: 'GET',
     status: 200,
-    response: JSON.stringify([
+    response: [
       {
         insertion_data: {
           content_id1: {
@@ -38,6 +38,6 @@ export const mockData = [
           },
         },
       },
-    ]),
+    ],
   },
 ]
