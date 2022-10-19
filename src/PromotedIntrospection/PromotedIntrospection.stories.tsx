@@ -4,13 +4,11 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { PromotedIntrospection, PromotedIntrospectionTrigger } from './PromotedIntrospection'
 import { Card } from '@material-ui/core'
-import withMock from '@nathancahill/storybook-addon-mock'
 import { mockData } from './mocks'
 
 export default {
   title: 'PromotedIntrospection',
   component: PromotedIntrospection,
-  decorators: [withMock],
 } as ComponentMeta<typeof PromotedIntrospection>
 
 const SearchItem = () => {

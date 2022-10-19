@@ -4,7 +4,6 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { PromotedIntrospection } from './PromotedIntrospection/PromotedIntrospection'
 import { Card } from '@material-ui/core'
-import withMock from '@nathancahill/storybook-addon-mock'
 import { withPromotedIntrospection } from './withPromotedIntrospection'
 import { mockData } from './PromotedIntrospection/mocks'
 
@@ -32,7 +31,6 @@ const WithPromotedIntrospection = withPromotedIntrospection({
 export default {
   title: 'withPromotedIntrospection',
   component: WithPromotedIntrospection,
-  decorators: [withMock],
 } as ComponentMeta<typeof WithPromotedIntrospection>
 
 const Template: ComponentStory<typeof PromotedIntrospection> = (args) => (

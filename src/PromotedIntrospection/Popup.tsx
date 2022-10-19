@@ -165,9 +165,9 @@ export const Popup = ({
               <>
                 <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
                   <Tab label="Stats" />
-                  <Tab label="Properties" />
+                  {/* <Tab label="Properties" />
                   <Tab label="Moderation" />
-                  <Tab label="Moderation Log" />
+                  <Tab label="Moderation Log" /> */}
                 </Tabs>
                 {promotedLogoVisible && (
                   <img
