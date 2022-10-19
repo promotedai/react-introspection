@@ -5,6 +5,7 @@
 import React, { Suspense, useRef } from 'react'
 import { MouseEvent, ReactNode, useEffect, useState } from 'react'
 import { IntrospectionData } from './types'
+import logo from './logo.png'
 
 const Popup = React.lazy(() => import('./Popup').then(({ Popup }) => ({ default: Popup })))
 
@@ -59,7 +60,7 @@ export const PromotedIntrospection = ({
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [error, setError] = useState<string | void>()
   const [isLoading, setIsLoading] = useState(false)
-  const [introspectionDataPayload, setIntrospectionDataPayload] = useState<IntrospectionData | undefined>()
+  const [introspectionPayload, setIntrospectionPayload] = useState<IntrospectionData | undefined>()
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
 
@@ -117,7 +118,7 @@ export const PromotedIntrospection = ({
       e?.preventDefault()
       try {
         const payload = await getIntrospectionPayload()
-        setIntrospectionDataPayload(payload)
+        setIntrospectionPayload(payload)
       } catch (e) {
         setError(e)
       }
@@ -193,7 +194,7 @@ export const PromotedIntrospection = ({
           >
             <div
               style={{
-                background: "no-repeat url('https://avatars.githubusercontent.com/t/3500892?s=280&v=4')",
+                background: `no-repeat url('${logo}')`,
                 backgroundSize: 'cover',
                 backgroundColor: '#eee',
                 height: '100%',
@@ -217,7 +218,7 @@ export const PromotedIntrospection = ({
                   value: item.logUserId,
                 },
               ]}
-              introspectionData={introspectionDataPayload}
+              introspectionData={introspectionPayload}
               handleClose={handleClose}
             />
           </Suspense>

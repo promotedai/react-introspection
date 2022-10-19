@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
 import { REQUEST_ERRORS } from './PromotedIntrospection'
 import { IntrospectionItem } from './PromotedIntrospection'
+import logo from './logo.png'
 
 export interface IntrospectionIds {
   label: string
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
     height: '300px',
   },
+  // TODO: Allow the user to customize on which side of the trigger the popup appears
   popupContainer: {
     position: 'absolute',
     left: '-425px',
@@ -169,12 +171,7 @@ export const Popup = ({
                   <Tab label="Moderation" />
                   <Tab label="Moderation Log" /> */}
                 </Tabs>
-                {promotedLogoVisible && (
-                  <img
-                    className={classes.promotedLogo}
-                    src="https://avatars.githubusercontent.com/t/3500892?s=280&v=4"
-                  />
-                )}
+                {promotedLogoVisible && <img className={classes.promotedLogo} src={logo} />}
 
                 {tabIndex == 0 && (
                   <StatsPanel

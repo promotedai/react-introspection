@@ -8,6 +8,7 @@ import { styles } from './styles'
 import { IntrospectionData } from './types'
 import { IntrospectionIds } from './Popup'
 import { ranks, statistics } from '../constants'
+
 export interface StatsPanelArgs {
   introspectionIds: IntrospectionIds[]
   introspectionData: IntrospectionData
