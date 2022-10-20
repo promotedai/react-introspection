@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/promotedai/react-introspection/compare/v1.2.0...v1.2.1) (2022-10-20)
+
+
+### Bug Fixes
+
+* Sync version with GitHub tag ([9d62f42](https://github.com/promotedai/react-introspection/commit/9d62f4224aa280200902f13cc6e4cd5be075076c))
+
 # [1.2.0](https://github.com/promotedai/react-introspection/compare/v1.1.0...v1.2.0) (2022-10-20)
 
 
