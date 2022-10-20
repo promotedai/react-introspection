@@ -1,22 +1,28 @@
 import React, { ComponentType } from 'react'
-import { PromotedIntrospectionCell } from './Cell/PromotedIntrospectionCell'
+import { PromotedIntrospection } from './PromotedIntrospection/PromotedIntrospection'
+
+export interface WithPromotedIntrospectionProps {
+  endpoint: string
+  apiKey?: string
+}
 
 export const withPromotedIntrospection =
-  (introspectionEndpoint: string) =>
+  ({ endpoint, apiKey }: WithPromotedIntrospectionProps) =>
   <P extends object>(WrappedComponent: ComponentType<P>) => {
     const WithPromotedIntrospection = (props: any) => {
       if (props.introspectionEnabled) {
         return (
-          <PromotedIntrospectionCell
+          <PromotedIntrospection
             item={props.item}
-            introspectionEndpoint={introspectionEndpoint}
+            endpoint={endpoint}
+            apiKey={apiKey}
             isOpen={props.introspectionOpen}
             renderTrigger={props.renderIntrospectionTrigger}
             onClose={props.onIntrospectionClose}
             disableDefaultTrigger={props.disableDefaultIntrospectionTrigger}
           >
             <WrappedComponent {...props} />
-          </PromotedIntrospectionCell>
+          </PromotedIntrospection>
         )
       }
 

@@ -2,13 +2,14 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { PromotedIntrospectionCell, PromotedIntrospectionCellTrigger } from './PromotedIntrospectionCell'
+import { PromotedIntrospection, PromotedIntrospectionTrigger } from './PromotedIntrospection'
 import { Card } from '@material-ui/core'
+import { mockData } from './mocks'
 
 export default {
-  title: 'PromotedIntrospectionCell',
-  component: PromotedIntrospectionCell,
-} as ComponentMeta<typeof PromotedIntrospectionCell>
+  title: 'PromotedIntrospection',
+  component: PromotedIntrospection,
+} as ComponentMeta<typeof PromotedIntrospection>
 
 const SearchItem = () => {
   return (
@@ -28,29 +29,34 @@ const SearchItem = () => {
   )
 }
 
-const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
+const Template: ComponentStory<typeof PromotedIntrospection> = (args) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    <PromotedIntrospectionCell {...args}>
+    <PromotedIntrospection {...args}>
       <SearchItem />
-    </PromotedIntrospectionCell>
+    </PromotedIntrospection>
   </div>
 )
 
 export const Default = Template.bind({})
+Default.parameters = { mockData }
 
 Default.args = {
-  introspectionEndpoint: 'www.foo.com',
+  endpoint: 'www.foo.com',
+  apiKey: 'api-key',
   item: {
-    insertionId: 'abc',
+    contentId: 'content_id2',
+    logUserId: 'test-loguserid',
   },
 }
 
 export const CustomTrigger = Template.bind({})
-
+CustomTrigger.parameters = { mockData }
 CustomTrigger.args = {
-  introspectionEndpoint: 'www.foo.com',
+  endpoint: 'www.foo.com',
+  apiKey: 'api-key',
   item: {
-    insertionId: 'abc',
+    contentId: 'content_id2',
+    logUserId: 'test-loguserid',
   },
   renderTrigger: (onTrigger: () => any) => {
     return (
@@ -67,43 +73,49 @@ export const Controlled = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <button onClick={() => setIsOpen(true)}>Open</button>
-      <PromotedIntrospectionCell
+      <PromotedIntrospection
         isOpen={isOpen}
         disableDefaultTrigger
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
+        item={{ logUserId: 'test-loguserid', contentId: 'content_id2' }}
+        endpoint="www.foo.com"
+        apiKey="api-key"
         onClose={() => setIsOpen(false)}
       >
         <SearchItem />
-      </PromotedIntrospectionCell>
+      </PromotedIntrospection>
     </div>
   )
 }
+Controlled.parameters = { mockData }
 
 export const TriggerOverlay = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <PromotedIntrospectionCell
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
-        triggerType={PromotedIntrospectionCellTrigger.Overlay}
+      <PromotedIntrospection
+        item={{ logUserId: 'test-loguserid', contentId: 'content_id2' }}
+        endpoint="www.foo.com"
+        apiKey="api-key"
+        triggerType={PromotedIntrospectionTrigger.Overlay}
       >
         <SearchItem />
-      </PromotedIntrospectionCell>
+      </PromotedIntrospection>
     </div>
   )
 }
+TriggerOverlay.parameters = { mockData }
 
 export const TriggerOverlayOnHover = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <PromotedIntrospectionCell
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
-        triggerType={PromotedIntrospectionCellTrigger.OverlayOnHover}
+      <PromotedIntrospection
+        item={{ logUserId: 'test-loguserid', contentId: 'content_id1' }}
+        endpoint="www.foo.com"
+        apiKey="api-key"
+        triggerType={PromotedIntrospectionTrigger.OverlayOnHover}
       >
         <SearchItem />
-      </PromotedIntrospectionCell>
+      </PromotedIntrospection>
     </div>
   )
 }
+TriggerOverlayOnHover.parameters = { mockData }

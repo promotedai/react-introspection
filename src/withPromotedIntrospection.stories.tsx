@@ -2,11 +2,12 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { PromotedIntrospectionCell } from './Cell/PromotedIntrospectionCell'
+import { PromotedIntrospection } from './PromotedIntrospection/PromotedIntrospection'
 import { Card } from '@material-ui/core'
 import { withPromotedIntrospection } from './withPromotedIntrospection'
+import { mockData } from './PromotedIntrospection/mocks'
 
-const BaseComponent = ({ item }: { item: { insertionId: string } }) => (
+const BaseComponent = ({ item }: { item: { logUserId: string; contentId: string } }) => (
   <Card
     style={{
       height: 300,
@@ -18,28 +19,36 @@ const BaseComponent = ({ item }: { item: { insertionId: string } }) => (
       margin: 'auto',
     }}
   >
-    Some search result with insertionId {item.insertionId}
+    Some search result with Log User Id {item.logUserId}
   </Card>
 )
 
-const WithPromotedIntrospection = withPromotedIntrospection('www.foo.com')(BaseComponent)
+const WithPromotedIntrospection = withPromotedIntrospection({
+  endpoint: 'www.foo.com',
+  apiKey: 'apikey',
+})(BaseComponent)
 
 export default {
-  title: 'withPromotedIntrospectionCell',
+  title: 'withPromotedIntrospection',
   component: WithPromotedIntrospection,
 } as ComponentMeta<typeof WithPromotedIntrospection>
 
-const Template: ComponentStory<typeof PromotedIntrospectionCell> = (args) => (
+const Template: ComponentStory<typeof PromotedIntrospection> = (args) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
     <WithPromotedIntrospection {...args} />
   </div>
 )
 
 export const Default = Template.bind({})
+Default.parameters = {
+  mockData,
+}
+
 Default.args = {
   introspectionEnabled: true,
   item: {
-    insertionId: 'abc',
+    contentId: 'content_id2',
+    logUserId: 'test-loguserid',
   },
 }
 
@@ -52,11 +61,16 @@ export const Controlled = () => {
       <WithPromotedIntrospection
         introspectionOpen={isOpen}
         introspectionEnabled
+        endpoint="www.foo.com"
+        apiKey="apikey"
         disableDefaultIntrospectionTrigger
-        item={{ insertionId: 'abc' }}
-        introspectionEndpoint="www.foo.com"
+        item={{ contentId: 'content_id2', logUserId: 'test-loguserid' }}
         onIntrospectionClose={() => setIsOpen(false)}
       />
     </div>
   )
+}
+
+Controlled.parameters = {
+  mockData,
 }
