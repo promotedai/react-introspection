@@ -1,3 +1,21 @@
+# [1.2.0](https://github.com/promotedai/react-introspection/compare/v1.1.0...v1.2.0) (2022-10-20)
+
+
+### Bug Fixes
+
+* add error logging, change file names, and remove dev/v1 from endpoint path ([83c55fe](https://github.com/promotedai/react-introspection/commit/83c55fea5b2069d0941cd21d329a22d2fda87596))
+* adjust stories for mock data, and fix issue with controlled popup ([1a6852f](https://github.com/promotedai/react-introspection/commit/1a6852fe5a5393db329770071929a659e3a5fc72))
+* fix issue with storybook mock ([b7e961b](https://github.com/promotedai/react-introspection/commit/b7e961b63f14326b2af5b7e785bb039d7f3ac564))
+* make apikey optional ([45b9285](https://github.com/promotedai/react-introspection/commit/45b928575eb34c6b22e4a4e6d9482a9c3c3f4ea4))
+* update in response to PR comments ([f4653f3](https://github.com/promotedai/react-introspection/commit/f4653f3c54cf28eb6d37e073d0bb2d97627ce289))
+
+
+### Features
+
+* begin api integration for stats screen ([bc5d6e2](https://github.com/promotedai/react-introspection/commit/bc5d6e27d0a9cd495bb09f7dccf1fd870bd5270a))
+* implement copy functionality ([803a2ba](https://github.com/promotedai/react-introspection/commit/803a2ba940117866cdf1451415775c86c3e91857))
+* update to include known fields and refactor config ([8925d1f](https://github.com/promotedai/react-introspection/commit/8925d1f3ccf3dcfb51cca06d0661d6ff078a00dd))
+
 # [1.1.0](https://github.com/promotedai/react-introspection/compare/v1.0.2...v1.1.0) (2022-10-14)
 
 
