@@ -44,7 +44,9 @@ export enum REQUEST_ERRORS {
   FETCH_FAILED = 'FETCH_FAILED',
 }
 
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+// TODO: investigate why navigator is undefined
+// const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+const isMobile = false
 
 export const PromotedIntrospection = ({
   item,
@@ -135,13 +137,6 @@ export const PromotedIntrospection = ({
     e.preventDefault()
     handleClose()
   }
-
-  useEffect(() => {
-    const body = document.querySelector('body')
-    if (!body) return
-
-    body.style.overflow = contextMenuOpen && endpoint ? 'hidden' : 'initial'
-  }, [contextMenuOpen])
 
   const [showTriggerOverlay, setShowTriggerOverlay] = useState(
     () =>
