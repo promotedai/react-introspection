@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/promotedai/react-introspection/compare/v1.2.1...v1.3.0) (2022-10-21)
+
+
+### Features
+
+* small package updates for chromatic ([5aaebbe](https://github.com/promotedai/react-introspection/commit/5aaebbe497a295c8e1f07d48f239cdf9ce4d9f37))
+
 ## [1.2.1](https://github.com/promotedai/react-introspection/compare/v1.2.0...v1.2.1) (2022-10-20)
 
 
