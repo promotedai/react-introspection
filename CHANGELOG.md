@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/promotedai/react-introspection/compare/v1.3.0...v1.3.1) (2022-10-21)
+
+
+### Bug Fixes
+
+* remove references to navigator and allow scrolling while popup is open ([fa95ad0](https://github.com/promotedai/react-introspection/commit/fa95ad0ec18445716f71aea0d5c26cf9da43c496))
+
 # [1.3.0](https://github.com/promotedai/react-introspection/compare/v1.2.1...v1.3.0) (2022-10-21)
 
 
