@@ -77,7 +77,7 @@ export const PromotedIntrospection = ({
         headers['x-api-key'] = apiKey
       }
       result = await fetch(
-        `${endpoint[endpoint.length - 1] === '/' ? endpoint.slice(0, -1) : endpoint}/introspectiondata/byloguserid/${
+        `${endpoint[endpoint.length - 1] === '/' ? endpoint.slice(0, -1) : endpoint}/v1/introspectiondata/byloguserid/${
           item.logUserId
         }`,
         {
