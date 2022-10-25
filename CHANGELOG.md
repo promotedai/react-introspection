@@ -1,3 +1,11 @@
+## [1.3.3](https://github.com/promotedai/react-introspection/compare/v1.3.2...v1.3.3) (2022-10-25)
+
+
+### Bug Fixes
+
+* keep the endpoint version instead of leaving it to the client ([b906f80](https://github.com/promotedai/react-introspection/commit/b906f8074bc0923adbf8d95972700ad56a5d0c08))
+* keep the endpoint version instead of leaving it to the client ([40f41aa](https://github.com/promotedai/react-introspection/commit/40f41aa96b8dae7b03ab879c613f30ffaceaaa4c))
+
 ## [1.3.2](https://github.com/promotedai/react-introspection/compare/v1.3.1...v1.3.2) (2022-10-21)
 
 
