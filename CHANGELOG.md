@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/promotedai/react-introspection/compare/v1.3.4...v1.3.5) (2022-10-25)
+
+
+### Bug Fixes
+
+* Re-run build ([89757ca](https://github.com/promotedai/react-introspection/commit/89757ca3b89e0679d4636ab652b10542b4837b08))
+
 ## [1.3.4](https://github.com/promotedai/react-introspection/compare/v1.3.3...v1.3.4) (2022-10-25)
 
 
