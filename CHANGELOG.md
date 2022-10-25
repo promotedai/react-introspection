@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/promotedai/react-introspection/compare/v1.3.3...v1.3.4) (2022-10-25)
+
+
+### Bug Fixes
+
+* update version to stay in sync with tag ([ada9522](https://github.com/promotedai/react-introspection/commit/ada9522a6c69b0fcbbcd3f1ecbc3a878f2356774))
+
 ## [1.3.3](https://github.com/promotedai/react-introspection/compare/v1.3.2...v1.3.3) (2022-10-25)
 
 
