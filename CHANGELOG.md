@@ -1,3 +1,12 @@
+## [1.3.6](https://github.com/promotedai/react-introspection/compare/v1.3.5...v1.3.6) (2022-10-26)
+
+
+### Bug Fixes
+
+* display insertion id ([f1fb719](https://github.com/promotedai/react-introspection/commit/f1fb719c98684e2280ff72318e5fcb79c6e031f5))
+* display request id ([bec161c](https://github.com/promotedai/react-introspection/commit/bec161cb87b35cf84bdbd98a39511265f8fa4926))
+* display request id ([6c90552](https://github.com/promotedai/react-introspection/commit/6c90552750a57b2fb1c3c03c9f3f02a19b0cbda8))
+
 ## [1.3.5](https://github.com/promotedai/react-introspection/compare/v1.3.4...v1.3.5) (2022-10-25)
 
 
