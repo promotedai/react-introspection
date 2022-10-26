@@ -217,6 +217,10 @@ export const PromotedIntrospection = ({
                   label: 'Request ID',
                   value: introspectionPayload?.request_id,
                 },
+                {
+                  label: 'Insertion ID',
+                  value: introspectionPayload?.insertion_data[item.contentId]?.insertion_id,
+                },
               ]}
               introspectionData={introspectionPayload?.insertion_data?.[item.contentId]}
               handleClose={handleClose}
