@@ -24,6 +24,7 @@ interface ByLogUserIdResult {
   insertion_data: {
     [contentId: string]: IntrospectionData
   }
+  request_id: string
 }
 
 export interface PromotedIntrospectionArgs {
@@ -62,7 +63,7 @@ export const PromotedIntrospection = ({
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [error, setError] = useState<string | void>()
   const [isLoading, setIsLoading] = useState(false)
-  const [introspectionPayload, setIntrospectionPayload] = useState<IntrospectionData | undefined>()
+  const [introspectionPayload, setIntrospectionPayload] = useState<ByLogUserIdResult | undefined>()
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
 
@@ -100,11 +101,11 @@ export const PromotedIntrospection = ({
       throw REQUEST_ERRORS.INVALID_RESPONSE
     }
 
-    const match = data?.find((r) => r.insertion_data[item.contentId])?.insertion_data?.[item.contentId]
+    const matchingRequest = data?.find((r) => r.insertion_data[item.contentId])
 
-    if (!match) throw REQUEST_ERRORS.DATA_NOT_FOUND
+    if (!matchingRequest?.insertion_data?.[item.contentId]) throw REQUEST_ERRORS.DATA_NOT_FOUND
 
-    return match
+    return matchingRequest
   }
 
   useEffect(() => {
@@ -212,8 +213,16 @@ export const PromotedIntrospection = ({
                   label: 'Log User ID',
                   value: item.logUserId,
                 },
+                {
+                  label: 'Request ID',
+                  value: introspectionPayload?.request_id,
+                },
+                {
+                  label: 'Insertion ID',
+                  value: introspectionPayload?.insertion_data[item.contentId]?.insertion_id,
+                },
               ]}
-              introspectionData={introspectionPayload}
+              introspectionData={introspectionPayload?.insertion_data?.[item.contentId]}
               handleClose={handleClose}
             />
           </Suspense>
