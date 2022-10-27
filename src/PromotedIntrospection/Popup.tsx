@@ -6,7 +6,7 @@ import { ModerationLogPanel } from './ModerationLogPanel'
 import { PropertiesPanel } from './PropertiesPanel'
 import { StatsPanel } from './StatsPanel'
 import { IntrospectionData } from './types'
-import { makeStyles } from '@material-ui/core/styles'
+import { createGenerateClassName, makeStyles, StylesProvider } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
 import { REQUEST_ERRORS } from './PromotedIntrospection'
 import { IntrospectionItem } from './PromotedIntrospection'
@@ -18,7 +18,6 @@ export interface IntrospectionIds {
 }
 
 export interface PopupArgs {
-  isLoading: boolean
   triggerContainerRef: React.RefObject<HTMLDivElement>
   introspectionData?: IntrospectionData
   introspectionIds: IntrospectionIds[]
@@ -42,9 +41,9 @@ const useStyles = makeStyles((theme) => ({
   },
   // TODO: Allow the user to customize on which side of the trigger the popup appears
   popupContainer: {
+    visibility: 'hidden',
     position: 'absolute',
     left: '-425px',
-    top: '-41%',
   },
   outerContainer: {
     color: 'black',
@@ -79,6 +78,10 @@ const useStyles = makeStyles((theme) => ({
     width: '20px',
   },
 }))
+
+const generateClassName = createGenerateClassName({
+  productionPrefix: 'promoted-introspection',
+})
 
 export const Popup = ({
   error,
@@ -116,6 +119,7 @@ export const Popup = ({
     if (!triggerContainerRef.current || !popupContainerRef.current) return
     const triggerRect = triggerContainerRef.current.getBoundingClientRect()
     const popupRect = popupContainerRef.current.getBoundingClientRect()
+    popupContainerRef.current.style.visibility = 'visible'
     popupContainerRef.current.style.position = 'absolute'
     popupContainerRef.current.style.left = `${-Math.min(popupRect.width + 25, triggerRect.x)}px`
     popupContainerRef.current.style.top = `${-(popupRect.height - triggerRect.height) / 2}px`
@@ -153,45 +157,47 @@ export const Popup = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <div ref={popupContainerRef} className={classes.popupContainer}>
-        <Box className={classes.outerContainer}>
-          <Box boxShadow={4} className={classes.innerContainer}>
-            <Box className={classes.callout} />
-            {!introspectionData && !error && (
-              <div className={classes.loading}>
-                <CircularProgress />
-              </div>
-            )}
-            {error && <div className={classes.error}>{errorMap[error]}</div>}
-            {!error && introspectionData && (
-              <>
-                <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
-                  <Tab label="Stats" />
-                  {/* <Tab label="Properties" />
+      <StylesProvider generateClassName={generateClassName}>
+        <div ref={popupContainerRef} className={classes.popupContainer}>
+          <Box className={classes.outerContainer}>
+            <Box boxShadow={4} className={classes.innerContainer}>
+              <Box className={classes.callout} />
+              {!introspectionData && !error && (
+                <div className={classes.loading}>
+                  <CircularProgress />
+                </div>
+              )}
+              {error && <div className={classes.error}>{errorMap[error]}</div>}
+              {!error && introspectionData && (
+                <>
+                  <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
+                    <Tab label="Stats" />
+                    {/* <Tab label="Properties" />
                   <Tab label="Moderation" />
                   <Tab label="Moderation Log" /> */}
-                </Tabs>
-                {promotedLogoVisible && <img className={classes.promotedLogo} src={logo} />}
+                  </Tabs>
+                  {promotedLogoVisible && <img className={classes.promotedLogo} src={logo} />}
 
-                {tabIndex == 0 && (
-                  <StatsPanel
-                    introspectionIds={introspectionIds}
-                    introspectionData={introspectionData}
-                    handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
-                    handleClose={handleClose}
-                    theme={theme}
-                  />
-                )}
+                  {tabIndex == 0 && (
+                    <StatsPanel
+                      introspectionIds={introspectionIds}
+                      introspectionData={introspectionData}
+                      handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
+                      handleClose={handleClose}
+                      theme={theme}
+                    />
+                  )}
 
-                {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
+                  {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
 
-                {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
-                {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
-              </>
-            )}
+                  {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
+                  {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
+                </>
+              )}
+            </Box>
           </Box>
-        </Box>
-      </div>
+        </div>
+      </StylesProvider>
     </ThemeProvider>
   )
 }
