@@ -46,8 +46,10 @@ export enum REQUEST_ERRORS {
 }
 
 // TODO: investigate why navigator is undefined
-// const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-const isMobile = false
+let isMobile = false
+if (typeof navigator !== 'undefined') {
+  isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+}
 
 export const PromotedIntrospection = ({
   item,
@@ -62,14 +64,12 @@ export const PromotedIntrospection = ({
 }: PromotedIntrospectionArgs) => {
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [error, setError] = useState<string | void>()
-  const [isLoading, setIsLoading] = useState(false)
   const [introspectionPayload, setIntrospectionPayload] = useState<ByLogUserIdResult | undefined>()
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
 
   const getIntrospectionPayload = async () => {
     let result
-    setIsLoading(true)
     try {
       const headers = {
         'Content-Type': 'application/json',
@@ -87,11 +87,8 @@ export const PromotedIntrospection = ({
       )
     } catch (e) {
       console.error(e)
-      setIsLoading(false)
       throw REQUEST_ERRORS.FETCH_FAILED
     }
-
-    setIsLoading(false)
 
     let data: ByLogUserIdResult[]
     try {
@@ -119,13 +116,13 @@ export const PromotedIntrospection = ({
     setError()
     if (!contextMenuOpen && endpoint && item.logUserId && item.contentId) {
       e?.preventDefault()
+      setContextMenuOpen(true)
       try {
         const payload = await getIntrospectionPayload()
         setIntrospectionPayload(payload)
       } catch (e) {
         setError(e)
       }
-      setContextMenuOpen(true)
     }
   }
 
@@ -204,7 +201,6 @@ export const PromotedIntrospection = ({
         {contextMenuOpen && (
           <Suspense fallback={<></>}>
             <Popup
-              isLoading={isLoading}
               error={error}
               triggerContainerRef={triggerContainerRef}
               item={item}

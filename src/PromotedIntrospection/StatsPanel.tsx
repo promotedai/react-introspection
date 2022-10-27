@@ -103,22 +103,24 @@ export const StatsPanel = ({
   const handleCopyIds = () => {
     setCopyButtonVisible(false)
     handleCopyButtonVisibilityChange(false)
-    // navigator.clipboard.writeText(
-    //   JSON.stringify({
-    //     ids: introspectionIds.map((id) => ({
-    //       label: id.label,
-    //       value: id.value ?? '-',
-    //     })),
-    //     ranks: ranks.map((rank) => ({
-    //       label: rank.label,
-    //       value: rank.value(introspectionData) ?? '-',
-    //     })),
-    //     statistics: statistics.map((statistic) => ({
-    //       label: statistic.label,
-    //       value: statistic.value(introspectionData) ?? '-',
-    //     })),
-    //   })
-    // )
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(
+        JSON.stringify({
+          ids: introspectionIds.map((id) => ({
+            label: id.label,
+            value: id.value ?? '-',
+          })),
+          ranks: ranks.map((rank) => ({
+            label: rank.label,
+            value: rank.value(introspectionData) ?? '-',
+          })),
+          statistics: statistics.map((statistic) => ({
+            label: statistic.label,
+            value: statistic.value(introspectionData) ?? '-',
+          })),
+        })
+      )
+    }
     setTimeout(() => {
       setCopyButtonVisible(true)
       handleCopyButtonVisibilityChange(true)
