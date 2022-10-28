@@ -24,7 +24,7 @@ const BaseComponent = ({ item }: { item: { logUserId: string; contentId: string 
 )
 
 const WithPromotedIntrospection = withPromotedIntrospection({
-  endpoint: 'www.foo.com',
+  endpoint: 'www.foo.fake',
   apiKey: 'apikey',
 })(BaseComponent)
 
@@ -61,7 +61,7 @@ export const Controlled = () => {
       <WithPromotedIntrospection
         introspectionOpen={isOpen}
         introspectionEnabled
-        endpoint="www.foo.com"
+        endpoint="www.foo.fake"
         apiKey="apikey"
         disableDefaultIntrospectionTrigger
         item={{ contentId: 'content_id2', logUserId: 'test-loguserid' }}
@@ -73,4 +73,17 @@ export const Controlled = () => {
 
 Controlled.parameters = {
   mockData,
+}
+
+export const DisplayRight = Template.bind({})
+DisplayRight.parameters = {
+  mockData,
+}
+DisplayRight.args = {
+  introspectionEnabled: true,
+  item: {
+    contentId: 'content_id2',
+    logUserId: 'test-loguserid',
+  },
+  introspectionDirection: 'right',
 }

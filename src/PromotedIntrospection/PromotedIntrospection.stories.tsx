@@ -41,7 +41,7 @@ export const Default = Template.bind({})
 Default.parameters = { mockData }
 
 Default.args = {
-  endpoint: 'www.foo.com',
+  endpoint: 'www.foo.fake',
   apiKey: 'api-key',
   item: {
     contentId: 'content_id2',
@@ -49,10 +49,23 @@ Default.args = {
   },
 }
 
+export const DisplayRight = Template.bind({})
+DisplayRight.parameters = { mockData }
+
+DisplayRight.args = {
+  endpoint: 'www.foo.fake',
+  apiKey: 'api-key',
+  item: {
+    contentId: 'content_id2',
+    logUserId: 'test-loguserid',
+  },
+  direction: 'right',
+}
+
 export const CustomTrigger = Template.bind({})
 CustomTrigger.parameters = { mockData }
 CustomTrigger.args = {
-  endpoint: 'www.foo.com',
+  endpoint: 'www.foo.fake',
   apiKey: 'api-key',
   item: {
     contentId: 'content_id2',
@@ -77,7 +90,7 @@ export const Controlled = () => {
         isOpen={isOpen}
         disableDefaultTrigger
         item={{ logUserId: 'test-loguserid', contentId: 'content_id2' }}
-        endpoint="www.foo.com"
+        endpoint="www.foo.fake"
         apiKey="api-key"
         onClose={() => setIsOpen(false)}
       >
@@ -93,7 +106,7 @@ export const TriggerOverlay = () => {
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <PromotedIntrospection
         item={{ logUserId: 'test-loguserid', contentId: 'content_id2' }}
-        endpoint="www.foo.com"
+        endpoint="www.foo.fake"
         apiKey="api-key"
         triggerType={PromotedIntrospectionTrigger.Overlay}
       >
@@ -109,7 +122,7 @@ export const TriggerOverlayOnHover = () => {
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <PromotedIntrospection
         item={{ logUserId: 'test-loguserid', contentId: 'content_id1' }}
-        endpoint="www.foo.com"
+        endpoint="www.foo.fake"
         apiKey="api-key"
         triggerType={PromotedIntrospectionTrigger.OverlayOnHover}
       >
