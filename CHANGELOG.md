@@ -1,3 +1,11 @@
+## [1.3.8](https://github.com/promotedai/react-introspection/compare/v1.3.7...v1.3.8) (2022-10-28)
+
+
+### Bug Fixes
+
+* resolve issue with competing MUI versions ([34d2a47](https://github.com/promotedai/react-introspection/commit/34d2a4717ae69a1f26614a3ea2b3855df018410c))
+* resolve issue with competing MUI versions ([10c28f5](https://github.com/promotedai/react-introspection/commit/10c28f552c1fc4399c6649e5452d03d08e39699a))
+
 ## [1.3.7](https://github.com/promotedai/react-introspection/compare/v1.3.6...v1.3.7) (2022-10-26)
 
 
