@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const generateClassName = createGenerateClassName({
-  productionPrefix: 'promoted-introspection',
+  seed: 'promoted-introspection',
 })
 
 export const Popup = ({
