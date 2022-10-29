@@ -1,3 +1,10 @@
+## [1.3.9](https://github.com/promotedai/react-introspection/compare/v1.3.8...v1.3.9) (2022-10-29)
+
+
+### Bug Fixes
+
+* change Impr label to CTR ([dcbe166](https://github.com/promotedai/react-introspection/commit/dcbe16638fa0440a5ffa4c0a7ab2df9defc004a2))
+
 ## [1.3.8](https://github.com/promotedai/react-introspection/compare/v1.3.7...v1.3.8) (2022-10-28)
 
 
