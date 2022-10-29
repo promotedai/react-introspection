@@ -7,7 +7,7 @@ enum Rank {
 }
 
 enum Statistic {
-  IMPR_30_DAY = 'IMPR_30_DAY',
+  CTR_30_DAY = 'CTR_30_DAY',
   CVR_30_DAY = 'CVR_30_DAY',
   PERSONALIZATION_SCORE = 'PERSONALIZATION_SCORE',
   MODEL_SCORE = 'MODEL_SCORE',
@@ -20,7 +20,7 @@ const featureIds = {
   [Rank.ENGAGEMENT_MODEL_RANK]: '1086',
   [Rank.PROMOTED_RANK]: '1210',
 
-  [Statistic.IMPR_30_DAY]: '1065',
+  [Statistic.CTR_30_DAY]: '1065',
   [Statistic.CVR_30_DAY]: '1069',
   [Statistic.PERSONALIZATION_SCORE]: '1084',
   [Statistic.MODEL_SCORE]: '1211',
@@ -33,7 +33,7 @@ const ranksOrder = [Rank.PERSONALIZE_CONV_MODEL_RANK, Rank.ENGAGEMENT_MODEL_RANK
 const statisticsOrder = [
   Statistic.P_NAVIGATES,
   Statistic.P_CONV_GIVEN_NAVIGATE,
-  Statistic.IMPR_30_DAY,
+  Statistic.CTR_30_DAY,
   Statistic.CVR_30_DAY,
   Statistic.PERSONALIZATION_SCORE,
   Statistic.MODEL_SCORE,
@@ -78,9 +78,9 @@ const fieldConfig = {
     label: 'p(Conv | Navigate)',
     value: selector(featureIds[Statistic.P_CONV_GIVEN_NAVIGATE], decimalFormatter),
   },
-  [Statistic.IMPR_30_DAY]: {
-    label: '30-Day Impr',
-    value: selector(featureIds[Statistic.IMPR_30_DAY], decimalFormatter),
+  [Statistic.CTR_30_DAY]: {
+    label: '30-Day CTR',
+    value: selector(featureIds[Statistic.CTR_30_DAY], decimalFormatter),
   },
   [Statistic.CVR_30_DAY]: {
     label: '30-Day CVR',
