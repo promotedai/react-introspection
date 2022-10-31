@@ -38,3 +38,8 @@ When you want to undo, use `npm unlink` in `@promotedai/react-introspection/dist
 ## Deploy
 
 We use a GitHub action that runs semantic-release to determine how to update versions. Just do a normal code review and this should work. Depending on the message prefixes (e.g. `feat: `, `fix: `, `clean: `, `docs: `), it'll update the version appropriately.
+
+GitHub Actions does not push to npm because there is a bug with pushing to npm scoped packages.  We currently do this manually.
+1. `npm build`
+2. `npm login` with our deployment user.
+3. `npm publish` 
