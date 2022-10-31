@@ -18,6 +18,7 @@ export interface IntrospectionIds {
 }
 
 export interface PopupArgs {
+  direction?: 'left' | 'right'
   triggerContainerRef: React.RefObject<HTMLDivElement>
   introspectionData?: IntrospectionData
   introspectionIds: IntrospectionIds[]
@@ -39,11 +40,14 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
     height: '300px',
   },
-  // TODO: Allow the user to customize on which side of the trigger the popup appears
   popupContainer: {
     visibility: 'hidden',
     position: 'absolute',
     left: '-425px',
+  },
+  ['popupContainer--right']: {
+    right: '-425px',
+    left: 'auto',
   },
   outerContainer: {
     color: 'black',
@@ -70,6 +74,10 @@ const useStyles = makeStyles((theme) => ({
     top: '49%',
     width: '30px',
   },
+  ['callout--right']: {
+    right: 'calc(100% - 25px)',
+    left: 'auto',
+  },
   promotedLogo: {
     bottom: '26px',
     height: '20px',
@@ -90,6 +98,7 @@ export const Popup = ({
   introspectionIds,
   item,
   handleClose,
+  direction = 'left',
 }: PopupArgs) => {
   const theme = createTheme({
     typography: {
@@ -121,7 +130,7 @@ export const Popup = ({
     const popupRect = popupContainerRef.current.getBoundingClientRect()
     popupContainerRef.current.style.visibility = 'visible'
     popupContainerRef.current.style.position = 'absolute'
-    popupContainerRef.current.style.left = `${-Math.min(popupRect.width + 25, triggerRect.x)}px`
+    popupContainerRef.current.style[direction] = `${-Math.min(popupRect.width + 25, triggerRect.x)}px`
     popupContainerRef.current.style.top = `${-(popupRect.height - triggerRect.height) / 2}px`
   }, [])
 
@@ -158,10 +167,13 @@ export const Popup = ({
   return (
     <ThemeProvider theme={theme}>
       <StylesProvider generateClassName={generateClassName}>
-        <div ref={popupContainerRef} className={classes.popupContainer}>
+        <div
+          ref={popupContainerRef}
+          className={`${classes.popupContainer} ${direction === 'right' ? classes['popupContainer--right'] : ''}`}
+        >
           <Box className={classes.outerContainer}>
             <Box boxShadow={4} className={classes.innerContainer}>
-              <Box className={classes.callout} />
+              <Box className={`${classes.callout} ${direction === 'right' ? classes['callout--right'] : ''}`} />
               {!introspectionData && !error && (
                 <div className={classes.loading}>
                   <CircularProgress />

@@ -37,6 +37,7 @@ export interface PromotedIntrospectionArgs {
   disableDefaultTrigger?: boolean
   onClose?: () => any
   triggerType?: PromotedIntrospectionTrigger
+  direction?: 'left' | 'right'
 }
 
 export enum REQUEST_ERRORS {
@@ -61,6 +62,7 @@ export const PromotedIntrospection = ({
   isOpen,
   onClose,
   triggerType = PromotedIntrospectionTrigger.ContextMenu,
+  direction = 'left',
 }: PromotedIntrospectionArgs) => {
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [error, setError] = useState<string | void>()
@@ -201,6 +203,7 @@ export const PromotedIntrospection = ({
         {contextMenuOpen && (
           <Suspense fallback={<></>}>
             <Popup
+              direction={direction}
               error={error}
               triggerContainerRef={triggerContainerRef}
               item={item}
