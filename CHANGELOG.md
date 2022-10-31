@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/promotedai/react-introspection/compare/v1.3.9...v1.4.0) (2022-10-31)
+
+
+### Features
+
+* allow displaying the popup to the right of the trigger ([0fe05d2](https://github.com/promotedai/react-introspection/commit/0fe05d2f75dc100af3e8b5f191269f3fc8b0e776))
+
 ## [1.3.9](https://github.com/promotedai/react-introspection/compare/v1.3.8...v1.3.9) (2022-10-29)
 
 
