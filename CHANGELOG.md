@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/promotedai/react-introspection/compare/v1.4.0...v1.4.1) (2022-11-02)
+
+
+### Bug Fixes
+
+* add a more robust copy mechanism ([024a813](https://github.com/promotedai/react-introspection/commit/024a813c8d32123b9bfe39b8bb7c21218c3648e2))
+
 # [1.4.0](https://github.com/promotedai/react-introspection/compare/v1.3.9...v1.4.0) (2022-10-31)
 
 
