@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/promotedai/react-introspection/compare/v1.4.1...v1.4.2) (2022-11-02)
+
+
+### Bug Fixes
+
+* apply class prefixes in all environments ([aec05ed](https://github.com/promotedai/react-introspection/commit/aec05ed15b032ca87c75a331b144874466333cd3))
+
 ## [1.4.1](https://github.com/promotedai/react-introspection/compare/v1.4.0...v1.4.1) (2022-11-02)
 
 
