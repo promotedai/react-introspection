@@ -27,6 +27,8 @@ export interface PopupArgs {
   handleClose: () => any
 }
 
+const CALLOUT_WIDTH = 25
+
 const useStyles = makeStyles((theme) => ({
   loading: {
     display: 'flex',
@@ -75,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     width: '30px',
   },
   ['callout--right']: {
-    right: 'calc(100% - 25px)',
+    right: `calc(100% - ${CALLOUT_WIDTH}px)`,
     left: 'auto',
   },
   promotedLogo: {
@@ -130,7 +132,19 @@ export const Popup = ({
     const popupRect = popupContainerRef.current.getBoundingClientRect()
     popupContainerRef.current.style.visibility = 'visible'
     popupContainerRef.current.style.position = 'absolute'
-    popupContainerRef.current.style[direction] = `${-Math.min(popupRect.width + 25, triggerRect.x)}px`
+    if (direction === 'left') {
+      popupContainerRef.current.style.left = `${-Math.min(popupRect.width + CALLOUT_WIDTH, triggerRect.left)}px`
+      popupContainerRef.current.style.right = 'auto'
+    }
+
+    if (direction === 'right') {
+      popupContainerRef.current.style.right = `${-Math.min(
+        popupRect.width + CALLOUT_WIDTH,
+        window.innerWidth - triggerRect.right
+      )}px`
+      popupContainerRef.current.style.left = 'auto'
+    }
+
     popupContainerRef.current.style.top = `${-(popupRect.height - triggerRect.height) / 2}px`
   }, [])
 
