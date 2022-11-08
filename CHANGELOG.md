@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/promotedai/react-introspection/compare/v1.4.2...v1.4.3) (2022-11-08)
+
+
+### Bug Fixes
+
+* correctly position the popup when direction='right' prop is passed ([c49f954](https://github.com/promotedai/react-introspection/commit/c49f954d0838c0461dc3d83d126d67109eb02c32))
+
 ## [1.4.2](https://github.com/promotedai/react-introspection/compare/v1.4.1...v1.4.2) (2022-11-02)
 
 
