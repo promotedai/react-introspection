@@ -5,7 +5,7 @@ import { StatsPanel } from './StatsPanel'
 import { IntrospectionData } from './types'
 import { createGenerateClassName, makeStyles, StylesProvider } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
-import { REQUEST_ERRORS } from './PromotedIntrospection'
+import { ByLogUserIdResult, REQUEST_ERRORS } from './PromotedIntrospection'
 import { IntrospectionItem } from './PromotedIntrospection'
 import logo from './logo.png'
 import { DebugPanel } from './DebugPanel'
@@ -19,6 +19,7 @@ export interface PopupArgs {
   direction?: 'left' | 'right'
   triggerContainerRef: React.RefObject<HTMLDivElement>
   introspectionData?: IntrospectionData
+  fullIntrospectionPayload?: ByLogUserIdResult[]
   introspectionIds: IntrospectionIds[]
   item: IntrospectionItem
   error?: string | void
@@ -95,6 +96,7 @@ export const Popup = ({
   error,
   triggerContainerRef,
   introspectionData,
+  fullIntrospectionPayload,
   introspectionIds,
   item,
   handleClose,
@@ -208,7 +210,7 @@ export const Popup = ({
                     />
                   )}
 
-                  {tabIndex === 1 && <DebugPanel theme={theme} introspectionData={introspectionData} />}
+                  {tabIndex === 1 && <DebugPanel theme={theme} introspectionPayload={fullIntrospectionPayload} />}
 
                   {/* {tabIndex == 2 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
                   {tabIndex == 3 && <ModerationPanel handleClose={handleClose} theme={theme} />}

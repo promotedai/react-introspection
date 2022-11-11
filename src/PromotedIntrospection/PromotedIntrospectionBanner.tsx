@@ -9,22 +9,24 @@ interface PromotedIntrospectionBannerArgs {
   copyText: string
   isCopying: boolean
   position?: BannerPosition
+  logUserId: string
 }
 
 export const PromotedIntrospectionBanner = ({
   onCopyFullPayload,
   isCopying,
   copyText,
-  position = 'BOTTOM_LEFT',
+  logUserId,
+  position = 'TOP_LEFT',
 }: PromotedIntrospectionBannerArgs) => {
   const styleMap = {
     TOP_LEFT: {
-      borderRadius: '0 0 0 5px',
+      borderRadius: '0 0 5px 0',
       top: 0,
       left: 0,
     },
     TOP_RIGHT: {
-      borderRadius: '0 0 5px 0',
+      borderRadius: '0 0 0 5px',
       top: 0,
       right: 0,
     },
@@ -46,7 +48,7 @@ export const PromotedIntrospectionBanner = ({
       style={{
         position: 'fixed',
         display: 'flex',
-        width: 'min(100vw,400px)',
+        width: 'min(100vw,600px)',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 10px',
@@ -56,7 +58,9 @@ export const PromotedIntrospectionBanner = ({
       }}
     >
       <img style={{ height: '20px', width: '20px' }} src={logo} />
-      <span style={{ marginLeft: '15px' }}>Introspection Enabled</span>
+      <span style={{ marginLeft: '15px' }}>
+        Introspection Enabled for log_user_id: <strong>{logUserId}</strong>
+      </span>
       <button
         style={{
           display: 'inline-flex',

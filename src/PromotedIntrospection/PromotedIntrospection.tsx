@@ -2,7 +2,7 @@
  * We want to avoid importing anything from material-ui in this file so that we can lazy load it
  * in the popup
  */
-import React, { Suspense, useRef } from 'react'
+import React, { Suspense, useMemo, useRef } from 'react'
 import { MouseEvent, ReactNode, useEffect, useState } from 'react'
 import { IntrospectionData } from './types'
 import logo from './logo.png'
@@ -22,7 +22,7 @@ export interface IntrospectionItem {
   contentId: string
 }
 
-interface ByLogUserIdResult {
+export interface ByLogUserIdResult {
   insertion_data: {
     [contentId: string]: IntrospectionData
   }
@@ -70,13 +70,18 @@ export const PromotedIntrospection = ({
 }: PromotedIntrospectionArgs) => {
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [error, setError] = useState<string | void>()
-  const [introspectionPayload, setIntrospectionPayload] = useState<ByLogUserIdResult | undefined>()
+  const [introspectionPayload, setIntrospectionPayload] = useState<ByLogUserIdResult[] | undefined>()
   const [isCopying, setIsCopying] = useState<boolean>(false)
   const [copyText, setCopyText] = useState('COPY PAYLOAD')
 
+  const matchingRequest = useMemo(
+    () => introspectionPayload?.find((r) => r.insertion_data[item.contentId]),
+    [introspectionPayload]
+  )
+
   const triggerContainerRef = useRef<HTMLDivElement>(null)
 
-  const getIntrospectionPayload = async (shouldReturnFullPayload?: boolean) => {
+  const getIntrospectionPayload = async () => {
     let result
     try {
       const headers = {
@@ -106,15 +111,7 @@ export const PromotedIntrospection = ({
       throw REQUEST_ERRORS.INVALID_RESPONSE
     }
 
-    if (shouldReturnFullPayload) {
-      return data
-    }
-
-    const matchingRequest = data?.find((r) => r.insertion_data[item.contentId])
-
-    if (!matchingRequest?.insertion_data?.[item.contentId]) throw REQUEST_ERRORS.DATA_NOT_FOUND
-
-    return matchingRequest
+    return data
   }
 
   useEffect(() => {
@@ -130,8 +127,8 @@ export const PromotedIntrospection = ({
       e?.preventDefault()
       setContextMenuOpen(true)
       try {
-        const payload = (await getIntrospectionPayload()) as ByLogUserIdResult
-        setIntrospectionPayload(payload)
+        const data = await getIntrospectionPayload()
+        setIntrospectionPayload(data)
       } catch (e) {
         setError(e)
       }
@@ -174,7 +171,7 @@ export const PromotedIntrospection = ({
 
     let payload
     try {
-      payload = await getIntrospectionPayload(true)
+      payload = await getIntrospectionPayload()
     } catch (e) {
       setCopyText('INVALID PAYLOAD')
       setTimeout(() => {
@@ -207,6 +204,7 @@ export const PromotedIntrospection = ({
         }}
       >
         <PromotedIntrospectionBanner
+          logUserId={item.logUserId}
           position={bannerPosition}
           onCopyFullPayload={onCopyFullPayload}
           isCopying={isCopying}
@@ -255,14 +253,15 @@ export const PromotedIntrospection = ({
                 },
                 {
                   label: 'Request ID',
-                  value: introspectionPayload?.request_id,
+                  value: matchingRequest?.request_id,
                 },
                 {
                   label: 'Insertion ID',
-                  value: introspectionPayload?.insertion_data[item.contentId]?.insertion_id,
+                  value: matchingRequest?.insertion_data[item.contentId]?.insertion_id,
                 },
               ]}
-              introspectionData={introspectionPayload?.insertion_data?.[item.contentId]}
+              introspectionData={matchingRequest?.insertion_data?.[item.contentId]}
+              fullIntrospectionPayload={introspectionPayload}
               handleClose={handleClose}
             />
           </Suspense>
