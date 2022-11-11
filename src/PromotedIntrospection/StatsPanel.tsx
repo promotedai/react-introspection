@@ -3,17 +3,16 @@ import { Box, Button, makeStyles, Typography, Tooltip } from '@material-ui/core'
 import { Theme } from '@material-ui/core'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import { useState } from 'react'
-import { Checkmark } from './Checkmark'
 import { styles } from './styles'
 import { IntrospectionData } from './types'
 import { IntrospectionIds } from './Popup'
 import copy from 'copy-to-clipboard'
 import { ranks, statistics } from '../constants'
+import { CopyButton } from './CopyButton'
 
 export interface StatsPanelArgs {
   introspectionIds: IntrospectionIds[]
   introspectionData: IntrospectionData
-  handleCopyButtonVisibilityChange: (visible: boolean) => any
   handleClose: () => any
   theme: Theme
 }
@@ -56,13 +55,7 @@ const statsStyles = {
 const useSharedStyles = makeStyles(styles)
 const useStyles = makeStyles(statsStyles)
 
-export const StatsPanel = ({
-  introspectionData,
-  introspectionIds,
-  handleCopyButtonVisibilityChange,
-  handleClose,
-  theme,
-}: StatsPanelArgs) => {
+export const StatsPanel = ({ introspectionData, introspectionIds, handleClose, theme }: StatsPanelArgs) => {
   const sharedClasses = useSharedStyles(theme)
   const classes = useStyles(theme)
 
@@ -103,7 +96,6 @@ export const StatsPanel = ({
   const [copyButtonVisible, setCopyButtonVisible] = useState(true)
   const handleCopyIds = () => {
     setCopyButtonVisible(false)
-    handleCopyButtonVisibilityChange(false)
     copy(
       JSON.stringify({
         ids: introspectionIds.map((id) => ({
@@ -122,7 +114,6 @@ export const StatsPanel = ({
     )
     setTimeout(() => {
       setCopyButtonVisible(true)
-      handleCopyButtonVisibilityChange(true)
     }, 2000)
   }
 
@@ -143,18 +134,7 @@ export const StatsPanel = ({
       {introspectionRows('Statistics', statistics, '1 / 3', '3 / 5', introspectionData)}
 
       <Box className={sharedClasses.buttonContainer}>
-        {copyButtonVisible ? (
-          <Button className={sharedClasses.button} onClick={handleCopyIds} variant="outlined">
-            Copy
-          </Button>
-        ) : (
-          <Box className={classes.copied}>
-            <Box className={classes.copied__inner}>
-              <Checkmark />
-            </Box>
-            <Typography className={classes.copied__text}>Copied</Typography>
-          </Box>
-        )}
+        <CopyButton copyButtonVisible={copyButtonVisible} handleCopyIds={handleCopyIds} />
         <Button className={sharedClasses.button} onClick={handleRequestReport} variant="outlined">
           Request Report...
         </Button>

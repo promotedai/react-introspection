@@ -1,9 +1,6 @@
 import React, { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CircularProgress, Box, Tab, Tabs, ThemeProvider } from '@material-ui/core'
 import { createTheme } from '@material-ui/core'
-import { ModerationPanel } from './ModerationPanel'
-import { ModerationLogPanel } from './ModerationLogPanel'
-import { PropertiesPanel } from './PropertiesPanel'
 import { StatsPanel } from './StatsPanel'
 import { IntrospectionData } from './types'
 import { createGenerateClassName, makeStyles, StylesProvider } from '@material-ui/core/styles'
@@ -11,6 +8,7 @@ import { blue } from '@material-ui/core/colors'
 import { REQUEST_ERRORS } from './PromotedIntrospection'
 import { IntrospectionItem } from './PromotedIntrospection'
 import logo from './logo.png'
+import { DebugPanel } from './DebugPanel'
 
 export interface IntrospectionIds {
   label: string
@@ -121,10 +119,6 @@ export const Popup = ({
   const handleTabChange = (_: SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex)
   }
-  const [promotedLogoVisible, setPromotedLogoVisible] = useState(true)
-  const handleCopyButtonVisibilityChange = (visible: boolean) => {
-    setPromotedLogoVisible(visible)
-  }
 
   const repositionPopup = useCallback(() => {
     if (!triggerContainerRef.current || !popupContainerRef.current) return
@@ -198,26 +192,27 @@ export const Popup = ({
                 <>
                   <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
                     <Tab label="Stats" />
+                    <Tab label="Raw Response" />
                     {/* <Tab label="Properties" />
                   <Tab label="Moderation" />
                   <Tab label="Moderation Log" /> */}
                   </Tabs>
-                  {promotedLogoVisible && <img className={classes.promotedLogo} src={logo} />}
+                  <img className={classes.promotedLogo} src={logo} />
 
                   {tabIndex == 0 && (
                     <StatsPanel
                       introspectionIds={introspectionIds}
                       introspectionData={introspectionData}
-                      handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
                       handleClose={handleClose}
                       theme={theme}
                     />
                   )}
 
-                  {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
+                  {tabIndex === 1 && <DebugPanel theme={theme} introspectionData={introspectionData} />}
 
-                  {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
-                  {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
+                  {/* {tabIndex == 2 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
+                  {tabIndex == 3 && <ModerationPanel handleClose={handleClose} theme={theme} />}
+                  {tabIndex == 4 && <ModerationLogPanel handleClose={handleClose} theme={theme} />} */}
                 </>
               )}
             </Box>

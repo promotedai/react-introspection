@@ -21,6 +21,7 @@ export const withPromotedIntrospection =
             onClose={props.onIntrospectionClose}
             disableDefaultTrigger={props.disableDefaultIntrospectionTrigger}
             direction={props.introspectionDirection}
+            bannerPosition={props.introspectionBannerPosition}
           >
             <WrappedComponent {...props} />
           </PromotedIntrospection>

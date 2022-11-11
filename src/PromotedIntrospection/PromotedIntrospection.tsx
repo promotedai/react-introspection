@@ -6,6 +6,8 @@ import React, { Suspense, useRef } from 'react'
 import { MouseEvent, ReactNode, useEffect, useState } from 'react'
 import { IntrospectionData } from './types'
 import logo from './logo.png'
+import { BannerPosition, PromotedIntrospectionBanner } from './PromotedIntrospectionBanner'
+import copy from 'copy-to-clipboard'
 
 const Popup = React.lazy(() => import('./Popup').then(({ Popup }) => ({ default: Popup })))
 
@@ -38,6 +40,7 @@ export interface PromotedIntrospectionArgs {
   onClose?: () => any
   triggerType?: PromotedIntrospectionTrigger
   direction?: 'left' | 'right'
+  bannerPosition?: BannerPosition
 }
 
 export enum REQUEST_ERRORS {
@@ -63,14 +66,17 @@ export const PromotedIntrospection = ({
   onClose,
   triggerType = PromotedIntrospectionTrigger.ContextMenu,
   direction = 'left',
+  bannerPosition,
 }: PromotedIntrospectionArgs) => {
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
   const [error, setError] = useState<string | void>()
   const [introspectionPayload, setIntrospectionPayload] = useState<ByLogUserIdResult | undefined>()
+  const [isCopying, setIsCopying] = useState<boolean>(false)
+  const [copyText, setCopyText] = useState('COPY PAYLOAD')
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
 
-  const getIntrospectionPayload = async () => {
+  const getIntrospectionPayload = async (shouldReturnFullPayload?: boolean) => {
     let result
     try {
       const headers = {
@@ -100,6 +106,10 @@ export const PromotedIntrospection = ({
       throw REQUEST_ERRORS.INVALID_RESPONSE
     }
 
+    if (shouldReturnFullPayload) {
+      return data
+    }
+
     const matchingRequest = data?.find((r) => r.insertion_data[item.contentId])
 
     if (!matchingRequest?.insertion_data?.[item.contentId]) throw REQUEST_ERRORS.DATA_NOT_FOUND
@@ -120,7 +130,7 @@ export const PromotedIntrospection = ({
       e?.preventDefault()
       setContextMenuOpen(true)
       try {
-        const payload = await getIntrospectionPayload()
+        const payload = (await getIntrospectionPayload()) as ByLogUserIdResult
         setIntrospectionPayload(payload)
       } catch (e) {
         setError(e)
@@ -158,6 +168,31 @@ export const PromotedIntrospection = ({
     }
   }
 
+  const onCopyFullPayload = async () => {
+    setIsCopying(true)
+    setCopyText('COPYING...')
+
+    let payload
+    try {
+      payload = await getIntrospectionPayload(true)
+    } catch (e) {
+      setCopyText('INVALID PAYLOAD')
+      setTimeout(() => {
+        setCopyText('COPY PAYLOAD')
+      }, 2000)
+    }
+
+    if (payload) {
+      copy(JSON.stringify(payload))
+      setCopyText('COPIED')
+      setTimeout(() => {
+        setCopyText('COPY PAYLOAD')
+      }, 2000)
+    }
+
+    setIsCopying(false)
+  }
+
   return (
     <>
       <div
@@ -171,6 +206,12 @@ export const PromotedIntrospection = ({
           ...(contextMenuOpen ? { background: 'white', zIndex: 1000 } : {}),
         }}
       >
+        <PromotedIntrospectionBanner
+          position={bannerPosition}
+          onCopyFullPayload={onCopyFullPayload}
+          isCopying={isCopying}
+          copyText={copyText}
+        />
         {(triggerType === PromotedIntrospectionTrigger.Overlay ||
           triggerType === PromotedIntrospectionTrigger.OverlayOnHover) && (
           <button
