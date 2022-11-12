@@ -1,16 +1,14 @@
 import React, { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CircularProgress, Box, Tab, Tabs, ThemeProvider } from '@material-ui/core'
 import { createTheme } from '@material-ui/core'
-import { ModerationPanel } from './ModerationPanel'
-import { ModerationLogPanel } from './ModerationLogPanel'
-import { PropertiesPanel } from './PropertiesPanel'
 import { StatsPanel } from './StatsPanel'
 import { IntrospectionData } from './types'
 import { createGenerateClassName, makeStyles, StylesProvider } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
-import { REQUEST_ERRORS } from './PromotedIntrospection'
+import { ByLogUserIdResult, REQUEST_ERRORS } from './PromotedIntrospection'
 import { IntrospectionItem } from './PromotedIntrospection'
 import logo from './logo.png'
+import { DebugPanel } from './DebugPanel'
 
 export interface IntrospectionIds {
   label: string
@@ -21,6 +19,7 @@ export interface PopupArgs {
   direction?: 'left' | 'right'
   triggerContainerRef: React.RefObject<HTMLDivElement>
   introspectionData?: IntrospectionData
+  fullIntrospectionPayload?: ByLogUserIdResult[]
   introspectionIds: IntrospectionIds[]
   item: IntrospectionItem
   error?: string | void
@@ -97,6 +96,7 @@ export const Popup = ({
   error,
   triggerContainerRef,
   introspectionData,
+  fullIntrospectionPayload,
   introspectionIds,
   item,
   handleClose,
@@ -120,10 +120,6 @@ export const Popup = ({
   const [tabIndex, setTabIndex] = useState(0)
   const handleTabChange = (_: SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex)
-  }
-  const [promotedLogoVisible, setPromotedLogoVisible] = useState(true)
-  const handleCopyButtonVisibilityChange = (visible: boolean) => {
-    setPromotedLogoVisible(visible)
   }
 
   const repositionPopup = useCallback(() => {
@@ -198,26 +194,27 @@ export const Popup = ({
                 <>
                   <Tabs onChange={handleTabChange} value={tabIndex} variant="scrollable" indicatorColor="primary">
                     <Tab label="Stats" />
+                    <Tab label="Raw Response" />
                     {/* <Tab label="Properties" />
                   <Tab label="Moderation" />
                   <Tab label="Moderation Log" /> */}
                   </Tabs>
-                  {promotedLogoVisible && <img className={classes.promotedLogo} src={logo} />}
+                  <img className={classes.promotedLogo} src={logo} />
 
                   {tabIndex == 0 && (
                     <StatsPanel
                       introspectionIds={introspectionIds}
                       introspectionData={introspectionData}
-                      handleCopyButtonVisibilityChange={handleCopyButtonVisibilityChange}
                       handleClose={handleClose}
                       theme={theme}
                     />
                   )}
 
-                  {tabIndex == 1 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
+                  {tabIndex === 1 && <DebugPanel theme={theme} introspectionPayload={fullIntrospectionPayload} />}
 
-                  {tabIndex == 2 && <ModerationPanel handleClose={handleClose} theme={theme} />}
-                  {tabIndex == 3 && <ModerationLogPanel handleClose={handleClose} theme={theme} />}
+                  {/* {tabIndex == 2 && <PropertiesPanel handleClose={handleClose} theme={theme} />}
+                  {tabIndex == 3 && <ModerationPanel handleClose={handleClose} theme={theme} />}
+                  {tabIndex == 4 && <ModerationLogPanel handleClose={handleClose} theme={theme} />} */}
                 </>
               )}
             </Box>
