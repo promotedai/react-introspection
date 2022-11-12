@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/promotedai/react-introspection/compare/v1.4.3...v1.5.0) (2022-11-12)
+
+
+### Bug Fixes
+
+* add full payload to debug tab and put logUserId in banner ([e30e694](https://github.com/promotedai/react-introspection/commit/e30e694088ffc82c87d23dfc629bbbe463b238ae))
+
+
+### Features
+
+* add debug tab and page-wide banner ([034f7d1](https://github.com/promotedai/react-introspection/commit/034f7d1b310d0fa6cde906c30bc26c6616e92a5e))
+
 ## [1.4.3](https://github.com/promotedai/react-introspection/compare/v1.4.2...v1.4.3) (2022-11-08)
 
 
