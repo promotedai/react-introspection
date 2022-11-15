@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/promotedai/react-introspection/compare/v1.5.0...v2.0.0) (2022-11-15)
+
+
+### Features
+
+* add improvements to page-wide banner and use a provider pattern ([c262a25](https://github.com/promotedai/react-introspection/commit/c262a25f0b6e387de0fd476d1eee49d2737aa422))
+
+
+### BREAKING CHANGES
+
+* The search list now needs to be wrapped in a single PromotedIntrospectionProvider component
+
 # [1.5.0](https://github.com/promotedai/react-introspection/compare/v1.4.3...v1.5.0) (2022-11-12)
 
 
