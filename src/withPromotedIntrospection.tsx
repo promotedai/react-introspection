@@ -1,27 +1,22 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, useContext } from 'react'
 import { PromotedIntrospection } from './PromotedIntrospection/PromotedIntrospection'
-
-export interface WithPromotedIntrospectionProps {
-  endpoint: string
-  apiKey?: string
-}
+import { PromotedIntrospectionContext } from './PromotedIntrospection/PromotedIntrospectionProvider'
 
 export const withPromotedIntrospection =
-  ({ endpoint, apiKey }: WithPromotedIntrospectionProps) =>
+  () =>
   <P extends object>(WrappedComponent: ComponentType<P>) => {
     const WithPromotedIntrospection = (props: any) => {
-      if (props.introspectionEnabled) {
+      const { isIntrospectionEnabled } = useContext(PromotedIntrospectionContext) || {}
+
+      if (isIntrospectionEnabled) {
         return (
           <PromotedIntrospection
-            item={props.item}
-            endpoint={endpoint}
-            apiKey={apiKey}
+            contentId={props.contentId}
             isOpen={props.introspectionOpen}
             renderTrigger={props.renderIntrospectionTrigger}
             onClose={props.onIntrospectionClose}
             disableDefaultTrigger={props.disableDefaultIntrospectionTrigger}
             direction={props.introspectionDirection}
-            bannerPosition={props.introspectionBannerPosition}
           >
             <WrappedComponent {...props} />
           </PromotedIntrospection>

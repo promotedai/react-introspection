@@ -9,9 +9,51 @@ Uses
 - Material UI
 - [TypeScript](https://www.typescriptlang.org/) support
 - [ESLint](https://eslint.org/) (with [Prettier](https://prettier.io/))
-- Unit tests ([Jest](https://jestjs.io/)
+- Unit tests ([Jest](https://jestjs.io/))
 - Flexible builds with [Rollup](https://www.rollupjs.org/)
 - [CHANGELOG.md](https://keepachangelog.com/en/1.0.0/) template
+
+## Usage
+
+- Create a new component by passing each search item component to the higher order component `withPromotedIntrospection`
+- Render these components below the `PromotedIntrospectionProvider` component along with the `PromotedIntrospectionBanner`
+
+```
+import { withPromotedIntrospection, PromotedIntrospectionProvider, PromotedIntrospectionBanner } from '@promotedai/react-introspection';
+
+const SearchItemWithPromotedIntrospection = withPromotedIntrospection()(SearchItem);
+
+export const SearchList = () => {
+  const searchData = [...];
+
+  const logUserId = 'log-user-id';
+  const endpoint = '/promotedintrospection';
+  const experimentDetails = useMemo({[ label: 'detail-1', value: 'detail-1-value' ]}, []);
+  const metadata = useMemo({[ label: 'metadatum-1', value: 'metadatum-2-value' ]}, []);
+
+  return (
+    <PromotedIntrospectionProvider
+      isIntrospectionEnabled // In actual usage, probably some function of query params
+      logUserId={logUserId}
+      endpoint={endpoint}
+      experimentDetails={experimentDetails}
+      metadata={metadata}>
+    />
+      <PromotedIntrospectionBanner />
+
+      {searchData.map((item) => (
+        <SearchItemWithPromotedIntrospection
+          key={item.id}
+          item={item}
+          contentId={item.contentId}
+        />
+      ))}
+
+    </PromotedIntrospectionProvider>
+  );
+};
+
+```
 
 ## Scripts
 
