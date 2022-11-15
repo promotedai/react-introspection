@@ -5,10 +5,10 @@ import { StatsPanel } from './StatsPanel'
 import { IntrospectionData } from './types'
 import { createGenerateClassName, makeStyles, StylesProvider } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
-import { ByLogUserIdResult, REQUEST_ERRORS } from './PromotedIntrospection'
-import { IntrospectionItem } from './PromotedIntrospection'
+import { ByLogUserIdResult } from './PromotedIntrospection'
 import logo from './logo.png'
 import { DebugPanel } from './DebugPanel'
+import { REQUEST_ERRORS } from './PromotedIntrospectionProvider'
 
 export interface IntrospectionIds {
   label: string
@@ -16,12 +16,13 @@ export interface IntrospectionIds {
 }
 
 export interface PopupArgs {
+  contentId: string
   direction?: 'left' | 'right'
   triggerContainerRef: React.RefObject<HTMLDivElement>
   introspectionData?: IntrospectionData
   fullIntrospectionPayload?: ByLogUserIdResult[]
   introspectionIds: IntrospectionIds[]
-  item: IntrospectionItem
+  logUserId: string
   error?: string | void
   handleClose: () => any
 }
@@ -98,7 +99,8 @@ export const Popup = ({
   introspectionData,
   fullIntrospectionPayload,
   introspectionIds,
-  item,
+  logUserId,
+  contentId,
   handleClose,
   direction = 'left',
 }: PopupArgs) => {
@@ -169,9 +171,9 @@ export const Popup = ({
   }, [])
 
   const errorMap = {
-    [REQUEST_ERRORS.DATA_NOT_FOUND]: `Could not find introspection data for Log User ID ${item.logUserId} and Content ID ${item.contentId}.  This is likely because the user is not flagged as an internal user.`,
-    [REQUEST_ERRORS.INVALID_RESPONSE]: `Response from server invalid for Log User ID ${item.logUserId}`,
-    [REQUEST_ERRORS.FETCH_FAILED]: `Fetch failed for Log User ID ${item.logUserId}`,
+    [REQUEST_ERRORS.DATA_NOT_FOUND]: `Could not find introspection data for Log User ID ${logUserId} and Content ID ${contentId}.  This is likely because the user is not flagged as an internal user.`,
+    [REQUEST_ERRORS.INVALID_RESPONSE]: `Response from server invalid for Log User ID ${logUserId}`,
+    [REQUEST_ERRORS.FETCH_FAILED]: `Fetch failed for Log User ID ${logUserId}`,
   }
 
   return (
@@ -201,7 +203,7 @@ export const Popup = ({
                   </Tabs>
                   <img className={classes.promotedLogo} src={logo} />
 
-                  {tabIndex == 0 && (
+                  {tabIndex === 0 && (
                     <StatsPanel
                       introspectionIds={introspectionIds}
                       introspectionData={introspectionData}

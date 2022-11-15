@@ -134,7 +134,7 @@ export const StatsPanel = ({ introspectionData, introspectionIds, handleClose, t
       {introspectionRows('Statistics', statistics, '1 / 3', '3 / 5', introspectionData)}
 
       <Box className={sharedClasses.buttonContainer}>
-        <CopyButton copyButtonVisible={copyButtonVisible} handleCopyIds={handleCopyIds} />
+        <CopyButton copyButtonVisible={copyButtonVisible} handleCopy={handleCopyIds} />
         <Button className={sharedClasses.button} onClick={handleRequestReport} variant="outlined">
           Request Report...
         </Button>

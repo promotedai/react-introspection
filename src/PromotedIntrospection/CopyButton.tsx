@@ -4,7 +4,7 @@ import { Checkmark } from './Checkmark'
 import { styles } from './styles'
 
 interface CopyButtonArgs {
-  handleCopyIds: () => void
+  handleCopy: () => void
   copyButtonVisible?: boolean
   label?: string
   finishedLabel?: string
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 const useSharedStyles = makeStyles(styles)
 
 export const CopyButton = ({
-  handleCopyIds,
+  handleCopy,
   copyButtonVisible,
   label = 'Copy',
   finishedLabel = 'Copied',
@@ -40,7 +40,7 @@ export const CopyButton = ({
   const sharedClasses = useSharedStyles()
 
   return copyButtonVisible ? (
-    <Button className={sharedClasses.button} onClick={handleCopyIds} variant="outlined">
+    <Button className={sharedClasses.button} onClick={handleCopy} variant="outlined">
       {label}
     </Button>
   ) : (

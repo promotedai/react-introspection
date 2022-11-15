@@ -38,7 +38,7 @@ export const DebugPanel = ({ introspectionPayload, theme }: DebugPanelArgs) => {
       </textarea>
 
       <Box className={sharedClasses.buttonContainer}>
-        <CopyButton copyButtonVisible={copyButtonVisible} handleCopyIds={handleCopyIds} />
+        <CopyButton copyButtonVisible={copyButtonVisible} handleCopy={handleCopyIds} />
       </Box>
     </Box>
   )

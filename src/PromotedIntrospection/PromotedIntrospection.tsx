@@ -2,12 +2,11 @@
  * We want to avoid importing anything from material-ui in this file so that we can lazy load it
  * in the popup
  */
-import React, { Suspense, useMemo, useRef } from 'react'
+import React, { Suspense, useContext, useMemo, useRef } from 'react'
 import { MouseEvent, ReactNode, useEffect, useState } from 'react'
 import { IntrospectionData } from './types'
 import logo from './logo.png'
-import { BannerPosition, PromotedIntrospectionBanner } from './PromotedIntrospectionBanner'
-import copy from 'copy-to-clipboard'
+import { PromotedIntrospectionContext } from './PromotedIntrospectionProvider'
 
 const Popup = React.lazy(() => import('./Popup').then(({ Popup }) => ({ default: Popup })))
 
@@ -18,7 +17,6 @@ export enum PromotedIntrospectionTrigger {
 }
 
 export interface IntrospectionItem {
-  logUserId: string
   contentId: string
 }
 
@@ -30,23 +28,14 @@ export interface ByLogUserIdResult {
 }
 
 export interface PromotedIntrospectionArgs {
-  endpoint: string
-  apiKey?: string
   children: ReactNode
-  item: IntrospectionItem
+  contentId: string
   isOpen?: boolean
   renderTrigger?: (onTrigger: (e: Event) => any) => ReactNode
   disableDefaultTrigger?: boolean
   onClose?: () => any
   triggerType?: PromotedIntrospectionTrigger
   direction?: 'left' | 'right'
-  bannerPosition?: BannerPosition
-}
-
-export enum REQUEST_ERRORS {
-  DATA_NOT_FOUND = 'DATA_NOT_FOUND',
-  INVALID_RESPONSE = 'INVALID_RESPONSE',
-  FETCH_FAILED = 'FETCH_FAILED',
 }
 
 // TODO: investigate why navigator is undefined
@@ -56,9 +45,7 @@ if (typeof navigator !== 'undefined') {
 }
 
 export const PromotedIntrospection = ({
-  item,
-  endpoint,
-  apiKey,
+  contentId,
   children,
   renderTrigger,
   disableDefaultTrigger,
@@ -66,53 +53,15 @@ export const PromotedIntrospection = ({
   onClose,
   triggerType = PromotedIntrospectionTrigger.ContextMenu,
   direction = 'left',
-  bannerPosition,
 }: PromotedIntrospectionArgs) => {
+  const { logUserId, introspectionPayload, error } = useContext(PromotedIntrospectionContext)
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
-  const [error, setError] = useState<string | void>()
-  const [introspectionPayload, setIntrospectionPayload] = useState<ByLogUserIdResult[] | undefined>()
-  const [isCopying, setIsCopying] = useState<boolean>(false)
-  const [copyText, setCopyText] = useState('COPY PAYLOAD')
-
   const matchingRequest = useMemo(
-    () => introspectionPayload?.find((r) => r.insertion_data[item.contentId]),
+    () => introspectionPayload?.find((r) => r.insertion_data[contentId]),
     [introspectionPayload]
   )
 
   const triggerContainerRef = useRef<HTMLDivElement>(null)
-
-  const getIntrospectionPayload = async () => {
-    let result
-    try {
-      const headers = {
-        'Content-Type': 'application/json',
-      }
-      if (apiKey) {
-        headers['x-api-key'] = apiKey
-      }
-      result = await fetch(
-        `${endpoint[endpoint.length - 1] === '/' ? endpoint.slice(0, -1) : endpoint}/v1/introspectiondata/byloguserid/${
-          item.logUserId
-        }`,
-        {
-          headers,
-        }
-      )
-    } catch (e) {
-      console.error(e)
-      throw REQUEST_ERRORS.FETCH_FAILED
-    }
-
-    let data: ByLogUserIdResult[]
-    try {
-      data = await result.json()
-    } catch (e) {
-      console.error(e)
-      throw REQUEST_ERRORS.INVALID_RESPONSE
-    }
-
-    return data
-  }
 
   useEffect(() => {
     setContextMenuOpen(Boolean(isOpen))
@@ -122,21 +71,16 @@ export const PromotedIntrospection = ({
   }, [isOpen])
 
   const onTrigger = async (e?: Event | MouseEvent) => {
-    setError()
-    if (!contextMenuOpen && endpoint && item.logUserId && item.contentId) {
+    if (!contextMenuOpen && logUserId && contentId && introspectionPayload) {
       e?.preventDefault()
       setContextMenuOpen(true)
-      try {
-        const data = await getIntrospectionPayload()
-        setIntrospectionPayload(data)
-      } catch (e) {
-        setError(e)
-      }
     }
   }
 
   const handleClose = () => {
-    setContextMenuOpen(false)
+    if (typeof isOpen === 'undefined') {
+      setContextMenuOpen(false)
+    }
     onClose?.()
   }
 
@@ -165,31 +109,6 @@ export const PromotedIntrospection = ({
     }
   }
 
-  const onCopyFullPayload = async () => {
-    setIsCopying(true)
-    setCopyText('COPYING...')
-
-    let payload
-    try {
-      payload = await getIntrospectionPayload()
-    } catch (e) {
-      setCopyText('INVALID PAYLOAD')
-      setTimeout(() => {
-        setCopyText('COPY PAYLOAD')
-      }, 2000)
-    }
-
-    if (payload) {
-      copy(JSON.stringify(payload))
-      setCopyText('COPIED')
-      setTimeout(() => {
-        setCopyText('COPY PAYLOAD')
-      }, 2000)
-    }
-
-    setIsCopying(false)
-  }
-
   return (
     <>
       <div
@@ -203,13 +122,6 @@ export const PromotedIntrospection = ({
           ...(contextMenuOpen ? { background: 'white', zIndex: 1000 } : {}),
         }}
       >
-        <PromotedIntrospectionBanner
-          logUserId={item.logUserId}
-          position={bannerPosition}
-          onCopyFullPayload={onCopyFullPayload}
-          isCopying={isCopying}
-          copyText={copyText}
-        />
         {(triggerType === PromotedIntrospectionTrigger.Overlay ||
           triggerType === PromotedIntrospectionTrigger.OverlayOnHover) && (
           <button
@@ -242,14 +154,15 @@ export const PromotedIntrospection = ({
         {contextMenuOpen && (
           <Suspense fallback={<></>}>
             <Popup
+              contentId={contentId}
               direction={direction}
               error={error}
               triggerContainerRef={triggerContainerRef}
-              item={item}
+              logUserId={logUserId}
               introspectionIds={[
                 {
                   label: 'Log User ID',
-                  value: item.logUserId,
+                  value: logUserId,
                 },
                 {
                   label: 'Request ID',
@@ -257,10 +170,10 @@ export const PromotedIntrospection = ({
                 },
                 {
                   label: 'Insertion ID',
-                  value: matchingRequest?.insertion_data[item.contentId]?.insertion_id,
+                  value: matchingRequest?.insertion_data[contentId]?.insertion_id,
                 },
               ]}
-              introspectionData={matchingRequest?.insertion_data?.[item.contentId]}
+              introspectionData={matchingRequest?.insertion_data?.[contentId]}
               fullIntrospectionPayload={introspectionPayload}
               handleClose={handleClose}
             />
