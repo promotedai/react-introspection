@@ -10,16 +10,15 @@ const PromotedIntrospectionBanner = React.lazy(() =>
 
 export type BannerPosition = 'TOP_LEFT' | 'TOP_RIGHT' | 'BOTTOM_LEFT' | 'BOTTOM_RIGHT'
 export interface PromotedIntrospectionBannerArgs {
-  logUserId: string
   position?: BannerPosition
 }
 
 export const PromotedIntrospectionBannerShell = (props: PromotedIntrospectionBannerArgs) => {
-  const { isIntrospectionEnabled, logUserId } = useContext(PromotedIntrospectionContext)
+  const { isIntrospectionEnabled } = useContext(PromotedIntrospectionContext)
 
   return isIntrospectionEnabled ? (
     <Suspense fallback={<div />}>
-      <PromotedIntrospectionBanner {...props} logUserId={logUserId} />
+      <PromotedIntrospectionBanner {...props} />
     </Suspense>
   ) : null
 }

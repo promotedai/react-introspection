@@ -37,7 +37,7 @@ export default {
 const Template: ComponentStory<typeof WithPromotedIntrospection> = (args: PromotedIntrospectionProviderArgs) => (
   <PromotedIntrospectionProvider {...args}>
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <PromotedIntrospectionBannerShell logUserId={args.logUserId} />
+      <PromotedIntrospectionBannerShell />
       <WithPromotedIntrospection contentId="content_id2" />
       <WithPromotedIntrospection contentId="content_id1" />
     </div>
