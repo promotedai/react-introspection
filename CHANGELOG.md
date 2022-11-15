@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/promotedai/react-introspection/compare/v2.0.0...v2.0.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* remove logUserId from PromotedIntrospectionBanner props ([b2b7de6](https://github.com/promotedai/react-introspection/commit/b2b7de652d35679e59970d4c92d5bc017a42e47c))
+
 # [2.0.0](https://github.com/promotedai/react-introspection/compare/v1.5.0...v2.0.0) (2022-11-15)
 
 
