@@ -28,7 +28,7 @@ const featureIds = {
   [Statistic.P_CONV_GIVEN_NAVIGATE]: '201000',
 }
 
-const ranksOrder = [Rank.PERSONALIZE_CONV_MODEL_RANK, Rank.ENGAGEMENT_MODEL_RANK, Rank.PROMOTED_RANK]
+const ranksOrder = [Rank.PERSONALIZE_CONV_MODEL_RANK, Rank.ENGAGEMENT_MODEL_RANK, Rank.RETRIEVAL_RANK]
 
 const statisticsOrder = [
   Statistic.P_NAVIGATES,
