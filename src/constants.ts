@@ -3,7 +3,7 @@ import { IntrospectionData } from './PromotedIntrospection/types'
 enum Rank {
   PERSONALIZE_CONV_MODEL_RANK = 'PERSONALIZE_CONV_MODEL_RANK',
   ENGAGEMENT_MODEL_RANK = 'ENGAGEMENT_MODEL_RANK',
-  PROMOTED_RANK = 'PROMOTED_RANK',
+  RETRIEVAL_RANK = 'RETRIEVAL_RANK',
 }
 
 enum Statistic {
@@ -18,7 +18,7 @@ enum Statistic {
 const featureIds = {
   [Rank.PERSONALIZE_CONV_MODEL_RANK]: '1002',
   [Rank.ENGAGEMENT_MODEL_RANK]: '1086',
-  [Rank.PROMOTED_RANK]: '1210',
+  [Rank.RETRIEVAL_RANK]: '1210',
 
   [Statistic.CTR_30_DAY]: '1065',
   [Statistic.CVR_30_DAY]: '1069',
