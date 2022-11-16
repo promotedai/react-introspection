@@ -66,9 +66,9 @@ const fieldConfig = {
     label: 'All Engagement Model Rank',
     value: selector(featureIds[Rank.ENGAGEMENT_MODEL_RANK]),
   },
-  [Rank.PROMOTED_RANK]: {
-    label: 'Promoted Rank',
-    value: selector(featureIds[Rank.PROMOTED_RANK]),
+  [Rank.RETRIEVAL_RANK]: {
+    label: 'Retrieval Rank',
+    value: selector(featureIds[Rank.RETRIEVAL_RANK]),
   },
   [Statistic.P_NAVIGATES]: {
     label: 'p(Navigate)',
