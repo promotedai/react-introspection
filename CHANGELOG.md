@@ -1,3 +1,12 @@
+## [2.0.2](https://github.com/promotedai/react-introspection/compare/v2.0.1...v2.0.2) (2022-11-25)
+
+
+### Bug Fixes
+
+* build issue ([85b58cd](https://github.com/promotedai/react-introspection/commit/85b58cdc64c28ab6aeb3db65df0050d6d707dea9))
+* change 'Promoted Rank' to 'Retrieval Rank' ([e63d582](https://github.com/promotedai/react-introspection/commit/e63d5827541dcd21aa3a23a793820a20ed806bb3))
+* more fixes ([cf76b1e](https://github.com/promotedai/react-introspection/commit/cf76b1ea3ed281e1a0b0e264c05d8d538839ac4d))
+
 ## [2.0.1](https://github.com/promotedai/react-introspection/compare/v2.0.0...v2.0.1) (2022-11-15)
 
 
