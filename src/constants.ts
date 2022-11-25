@@ -3,7 +3,7 @@ import { IntrospectionData } from './PromotedIntrospection/types'
 enum Rank {
   PERSONALIZE_CONV_MODEL_RANK = 'PERSONALIZE_CONV_MODEL_RANK',
   ENGAGEMENT_MODEL_RANK = 'ENGAGEMENT_MODEL_RANK',
-  PROMOTED_RANK = 'PROMOTED_RANK',
+  RETRIEVAL_RANK = 'RETRIEVAL_RANK',
 }
 
 enum Statistic {
@@ -18,7 +18,7 @@ enum Statistic {
 const featureIds = {
   [Rank.PERSONALIZE_CONV_MODEL_RANK]: '1002',
   [Rank.ENGAGEMENT_MODEL_RANK]: '1086',
-  [Rank.PROMOTED_RANK]: '1210',
+  [Rank.RETRIEVAL_RANK]: '1210',
 
   [Statistic.CTR_30_DAY]: '1065',
   [Statistic.CVR_30_DAY]: '1069',
@@ -28,7 +28,7 @@ const featureIds = {
   [Statistic.P_CONV_GIVEN_NAVIGATE]: '201000',
 }
 
-const ranksOrder = [Rank.PERSONALIZE_CONV_MODEL_RANK, Rank.ENGAGEMENT_MODEL_RANK, Rank.PROMOTED_RANK]
+const ranksOrder = [Rank.PERSONALIZE_CONV_MODEL_RANK, Rank.ENGAGEMENT_MODEL_RANK, Rank.RETRIEVAL_RANK]
 
 const statisticsOrder = [
   Statistic.P_NAVIGATES,
@@ -66,9 +66,9 @@ const fieldConfig = {
     label: 'All Engagement Model Rank',
     value: selector(featureIds[Rank.ENGAGEMENT_MODEL_RANK]),
   },
-  [Rank.PROMOTED_RANK]: {
-    label: 'Promoted Rank',
-    value: selector(featureIds[Rank.PROMOTED_RANK]),
+  [Rank.RETRIEVAL_RANK]: {
+    label: 'Retrieval Rank',
+    value: selector(featureIds[Rank.RETRIEVAL_RANK]),
   },
   [Statistic.P_NAVIGATES]: {
     label: 'p(Navigate)',
