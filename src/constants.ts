@@ -20,8 +20,8 @@ const featureIds = {
   [Rank.ENGAGEMENT_MODEL_RANK]: '1086',
   [Rank.RETRIEVAL_RANK]: '1210',
 
-  [Statistic.CTR_30_DAY]: '1065',
-  [Statistic.CVR_30_DAY]: '1069',
+  [Statistic.CTR_30_DAY]: '1581128',
+  [Statistic.CVR_30_DAY]: '1589352',
   [Statistic.PERSONALIZATION_SCORE]: '1084',
   [Statistic.MODEL_SCORE]: '1211',
   [Statistic.P_NAVIGATES]: '200002',
