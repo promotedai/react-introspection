@@ -1,3 +1,13 @@
+## [2.0.3](https://github.com/promotedai/react-introspection/compare/v2.0.2...v2.0.3) (2023-05-19)
+
+
+### Bug Fixes
+
+* attempted fix for chromatic issue by setting node version ([5d8a271](https://github.com/promotedai/react-introspection/commit/5d8a27136fa014e08785f78199368a94b5c98062))
+* counters v1 deprecation ([37575d9](https://github.com/promotedai/react-introspection/commit/37575d9d5c5f382a5e4775e41ffc67705668ed24))
+* update chromatic ([f0c6bed](https://github.com/promotedai/react-introspection/commit/f0c6bedab6174724d9b1a61935a82f73c441a370))
+* update package-lock ([9a69e33](https://github.com/promotedai/react-introspection/commit/9a69e33e9de14cfb21bce2c6225246cc6a6e965f))
+
 ## [2.0.2](https://github.com/promotedai/react-introspection/compare/v2.0.1...v2.0.2) (2022-11-25)
 
 
