@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/promotedai/react-introspection/compare/v2.0.3...v2.0.4) (2024-06-28)
+
+
+### Bug Fixes
+
+* dependabot reviewers ([#38](https://github.com/promotedai/react-introspection/issues/38)) ([3cb8112](https://github.com/promotedai/react-introspection/commit/3cb811237ef7394935a46f5b793efa213ef19017))
+
 ## [2.0.3](https://github.com/promotedai/react-introspection/compare/v2.0.2...v2.0.3) (2023-05-19)
 
 
